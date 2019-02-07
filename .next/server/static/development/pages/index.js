@@ -304,7 +304,11 @@ function (_Component) {
     key: "render",
     value: function render() {
       var children = this.props.children;
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Navbar, null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Navbar, null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "side-button"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "button"
+      }, "Consulta")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", {
         className: "section"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
@@ -387,11 +391,28 @@ var Matches = function Matches(_ref) {
       currentTime = _ref.currentTime,
       isLoading = _ref.isLoading;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_table__WEBPACK_IMPORTED_MODULE_2___default.a, {
+    data: matches,
     loading: isLoading,
+    defaultPageSize: 5,
     showPageJump: false,
-    showPageSizeOptions: false,
     defaultSortDesc: true,
-    defaultSorted: ['reservation_date'],
+    showPageSizeOptions: false,
+    defaultSorted: ["reservation_date"],
+    TrComponent: function TrComponent(props) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Tr, {
+        props: props
+      });
+    },
+    ThComponent: function ThComponent(props) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Th, {
+        props: props
+      });
+    },
+    TdComponent: function TdComponent(props) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Td, {
+        props: props
+      });
+    },
     TableComponent: function TableComponent(props) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Table, {
         props: props
@@ -412,18 +433,8 @@ var Matches = function Matches(_ref) {
         props: props
       });
     },
-    TrComponent: function TrComponent(props) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Tr, {
-        props: props
-      });
-    },
-    ThComponent: function ThComponent(props) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Th, {
-        props: props
-      });
-    },
-    TdComponent: function TdComponent(props) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Td, {
+    LoadingComponent: function LoadingComponent(props) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_LoadingComponent, {
         props: props
       });
     },
@@ -432,12 +443,6 @@ var Matches = function Matches(_ref) {
         props: props
       });
     },
-    LoadingComponent: function LoadingComponent(props) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_LoadingComponent, {
-        props: props
-      });
-    },
-    data: matches,
     columns: [{
       Header: "Title",
       accessor: "title"
@@ -447,8 +452,7 @@ var Matches = function Matches(_ref) {
     }, {
       Header: "Reservation Date",
       accessor: "reservation_date"
-    }],
-    defaultPageSize: 5
+    }]
   }));
 };
 

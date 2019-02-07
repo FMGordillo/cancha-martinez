@@ -10,6 +10,7 @@
     "start": "NODE_ENV=production node server.js"
   },
   "dependencies": {
+    "@zeit/next-preact": "^0.1.0",
     "@zeit/next-stylus": "^1.0.1",
     "axios": "^0.18.0",
     "formik": "^1.4.3",
@@ -22,7 +23,6 @@
     "yup": "^0.26.10"
   },
   "devDependencies": {
-    "@zeit/next-preact": "^0.1.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0"
   }

@@ -25,21 +25,22 @@ export const Matches = ({ matches, currentTime, isLoading }) => (
   <div>
     {/* <MatchesOld matches={matches} /> */}
     <ReactTable
+      data={matches}
       loading={isLoading}
+      defaultPageSize={5}
       showPageJump={false}
-      showPageSizeOptions={false}
       defaultSortDesc={true}
-      defaultSorted={['reservation_date']}
+      showPageSizeOptions={false}
+      defaultSorted={["reservation_date"]}
+      TrComponent={props => <Tr props={props} />}
+      ThComponent={props => <Th props={props} />}
+      TdComponent={props => <Td props={props} />}
       TableComponent={props => <Table props={props} />}
       TheadComponent={props => <Thead props={props} />}
       TbodyComponent={props => <Tbody props={props} />}
       TrGroupComponent={props => <TrGroup props={props} />}
-      TrComponent={props => <Tr props={props} />}
-      ThComponent={props => <Th props={props} />}
-      TdComponent={props => <Td props={props} />}
-      PaginationComponent={props => <PaginationComponent props={props} />}
       LoadingComponent={props => <LoadingComponent props={props} />}
-      data={matches}
+      PaginationComponent={props => <PaginationComponent props={props} />}
       columns={[
         {
           Header: "Title",
@@ -48,7 +49,6 @@ export const Matches = ({ matches, currentTime, isLoading }) => (
         { Header: "Owner", accessor: "owner" },
         { Header: "Reservation Date", accessor: "reservation_date" }
       ]}
-      defaultPageSize={5}
     />
   </div>
 );
@@ -124,7 +124,7 @@ const PaginationComponent = ({ props }) => {
   );
 };
 
-const LoadingComponent = ({props: {loading, loadingText }}) => {
-  console.log(loading, loadingText)
-  if(loading) return <span>{loadingText}</span>
-}
+const LoadingComponent = ({ props: { loading, loadingText } }) => {
+  console.log(loading, loadingText);
+  if (loading) return <span>{loadingText}</span>;
+};

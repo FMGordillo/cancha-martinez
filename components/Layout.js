@@ -1,20 +1,24 @@
-import { Component } from "preact"
-import Link from "next/link"
-import './style.styl'
+import { Component } from "preact";
+import Link from "next/link";
+import "./style.styl";
 
 class Layout extends Component {
-  handleLogin = () => {}
+  handleLogin = () => {};
 
   render() {
-    const { children } = this.props
+    const { children } = this.props;
     return (
       <div>
         <Navbar />
+        {/* Side button */}
+        <div className="side-button">
+          <button className="button">Consulta</button>
+        </div>
         <section className="section">
           <div className="container">{children}</div>
         </section>
       </div>
-    )
+    );
   }
 }
 
@@ -41,6 +45,6 @@ const Navbar = () => (
       </div>
     </div>
   </navbar>
-)
+);
 
-export default Layout
+export default Layout;
