@@ -1,0 +1,29 @@
+{
+  "name": "ibm-martinez-futbol",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "node server.js",
+    "dev:client": "next",
+    "build": "next build",
+    "start": "NODE_ENV=production node server.js"
+  },
+  "dependencies": {
+    "@zeit/next-stylus": "^1.0.1",
+    "axios": "^0.18.0",
+    "formik": "^1.4.3",
+    "moment": "^2.24.0",
+    "next": "^7.0.2",
+    "preact": "^8.4.2",
+    "preact-compat": "^3.18.4",
+    "react-table": "^6.8.6",
+    "stylus": "^0.54.5",
+    "yup": "^0.26.10"
+  },
+  "devDependencies": {
+    "@zeit/next-preact": "^0.1.0",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0"
+  }
+}
