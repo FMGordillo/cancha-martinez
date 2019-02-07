@@ -96,7 +96,7 @@ const PaginationComponent = ({ props }) => {
     page,
     onPageChange
   } = props;
-  console.log(props);
+  // console.log(props);
   return (
     <div className="columns">
       <div className="column" style={{ textAlign: "center" }}>
@@ -125,6 +125,6 @@ const PaginationComponent = ({ props }) => {
 };
 
 const LoadingComponent = ({ props: { loading, loadingText } }) => {
-  console.log(loading, loadingText);
+  // console.log(loading, loadingText);
   if (loading) return <span>{loadingText}</span>;
 };
