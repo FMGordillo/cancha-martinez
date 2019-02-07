@@ -13,9 +13,16 @@
     "@zeit/next-preact": "^0.1.0",
     "@zeit/next-stylus": "^1.0.1",
     "axios": "^0.18.0",
+    "connect-redis": "^3.4.0",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
     "formik": "^1.4.3",
+    "ibmcloud-appid": "^5.0.0",
     "moment": "^2.24.0",
     "next": "^7.0.2",
+    "next-auth": "^1.12.1",
+    "next-routes": "^1.4.2",
+    "passport": "^0.4.0",
     "preact": "^8.4.2",
     "preact-compat": "^3.18.4",
     "react-table": "^6.8.6",
@@ -23,7 +30,7 @@
     "yup": "^0.26.10"
   },
   "engines": {
-    "node": "9.x.x"
+    "node": "10.x.x"
   },
   "devDependencies": {
     "react": "^16.7.0",

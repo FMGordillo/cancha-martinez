@@ -1,4 +1,6 @@
+import axios from 'axios'
 import moment from "moment"
+import Router from 'next/router'
 import { Component } from "preact"
 import Layout from "../components/Layout"
 import { Matches } from "../components/Match"
@@ -7,6 +9,15 @@ import NewMatchForm from "../components/Form/NewMatchForm"
 import { getMatches, createMatch } from "../lib/cloudant"
 
 class Home extends Component {
+  static async getInitialProps({ res }) {
+    const { user } = res.req
+    if(user) {
+      return { user }
+    } else {
+      Router.redirect('/login')
+    }
+    
+  }
   state = {
     matches: [],
     currentTime: moment(),
@@ -47,8 +58,9 @@ class Home extends Component {
 
   render() {
     const { matches, formVisible, currentTime, isLoading } = this.state
+    const { user } = this.props
     return (
-      <Layout>
+      <Layout user={user}>
         <h1 className="title">Cancha Martinez</h1>
         <button className="button is-info" onClick={this.toggleModal}>
           Add new game

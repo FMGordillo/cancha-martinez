@@ -1,15 +1,14 @@
 import { Component } from "preact";
-import Link from "next/link";
 import "./style.styl";
 
 class Layout extends Component {
   handleLogin = () => {};
 
   render() {
-    const { children } = this.props;
+    const { children, user } = this.props;
     return (
       <div>
-        <Navbar />
+        <Navbar user={user} />
         {/* Side button */}
         <div className="side-button">
           <button className="button">Consulta</button>
@@ -22,7 +21,7 @@ class Layout extends Component {
   }
 }
 
-const Navbar = () => (
+const Navbar = ({ user }) => (
   <navbar className="navbar is-dark">
     <div className="container">
       <div className="navbar-brand">
@@ -38,9 +37,11 @@ const Navbar = () => (
 
       <div id="navbarMenu" className="navbar-menu">
         <div className="navbar-end">
-          <a className="navbar-item">
-            <a>Login</a>
-          </a>
+          {(user && <span className="navbar-item">Welcome, {user.name.split(' ')[0]}</span>) || (
+            <a className="navbar-item">
+              <a href="/login">Login</a>
+            </a>
+          )}
         </div>
       </div>
     </div>
