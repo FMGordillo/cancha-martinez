@@ -11,10 +11,16 @@ import { getMatches, createMatch } from "../lib/cloudant"
 class Home extends Component {
   static async getInitialProps({ res }) {
     const { user } = res.req
-    if(user) {
-      return { user }
-    } else {
+    if(res) {
+      if(user) {
+        return { user }
+      }
       Router.redirect('/login')
+    } else {
+      res.writeHead(302, {
+        Location: '/login'
+      })
+      res.end()
     }
     
   }
