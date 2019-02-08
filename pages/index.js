@@ -11,7 +11,8 @@ import { getMatches, createMatch } from "../lib/cloudant"
 class Home extends Component {
   static async getInitialProps({ res }) {
     const { user } = res.req
-    if(res && user)) {
+    
+    if(res && user) {
         return { user }
     } else {
       res.writeHead(302, {
@@ -19,7 +20,6 @@ class Home extends Component {
       })
       res.end()
     }
-    
   }
   state = {
     matches: [],
