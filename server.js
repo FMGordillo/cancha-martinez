@@ -17,7 +17,7 @@ app.prepare()
 		const WebAppStrategy = require("ibmcloud-appid").WebAppStrategy;
 
 		const server = express();
-		const HOST = process.env.HOSTNAME || `localhost:${port}`;
+		const HOST = !dev ? 'cancha-martinez-test' : `localhost:${port}`;
 		const CALLBACK_URL = "/login/callback";
 
 		console.log(HOST);
@@ -37,7 +37,7 @@ app.prepare()
 		passport.use(
 			new WebAppStrategy({
 				tenantId:
-					"<6730bc5d-75ae-460a-890d-9da></6730bc5d-75ae-460a-890d-9da>b022ac9da",
+					"6730bc5d-75ae-460a-890d-9da",
 				clientId: "7f9fe18d-9e69-4c8e-ab6d-16d508256b7c",
 				secret: "MmEwNjczNDMtY2M5MC00NjA4LWE0MmEtZjJjYWYxOTg1M2Qw",
 				oauthServerUrl:
@@ -80,7 +80,6 @@ app.prepare()
 			"/login",
 			passport.authenticate(WebAppStrategy.STRATEGY_NAME),
 			function(req, res) {
-				console.log(req.user);
 				res.redirect("/");
 			}
 		);
