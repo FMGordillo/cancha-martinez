@@ -17,7 +17,7 @@ app.prepare()
 		const WebAppStrategy = require("ibmcloud-appid").WebAppStrategy;
 
 		const server = express();
-		const HOST = !dev ? 'cancha-martinez-test' : `localhost:${port}`;
+		const HOST = !dev ? 'cancha-martinez-test.mybluemix.net' : `localhost:${port}`;
 		const CALLBACK_URL = "/login/callback";
 
 		console.log(HOST);
