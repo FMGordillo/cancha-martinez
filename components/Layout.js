@@ -1,9 +1,8 @@
-import { Component } from "preact";
+import { Component } from "react";
+import Link from "next/link";
 import "./style.styl";
 
 class Layout extends Component {
-  handleLogin = () => {};
-
   render() {
     const { children, user } = this.props;
     return (
@@ -16,6 +15,8 @@ class Layout extends Component {
         <section className="section">
           <div className="container">{children}</div>
         </section>
+        {/* TODO: Notification goes here */}
+        {/*<Notification />*/}
       </div>
     );
   }
@@ -37,7 +38,15 @@ const Navbar = ({ user }) => (
 
       <div id="navbarMenu" className="navbar-menu">
         <div className="navbar-end">
-          {(user && <span className="navbar-item">Welcome, {user.name.split(' ')[0]}</span>) || (
+          {(user && (
+            <span className="navbar-item">
+              Welcome, {user.name.split(" ")[0]}! ({" "}
+              <Link href={"/logout"}>
+                <a>Sign out</a>
+              </Link>
+              )
+            </span>
+          )) || (
             <a className="navbar-item">
               <a href="/login">Login</a>
             </a>
