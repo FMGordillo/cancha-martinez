@@ -1,7 +1,7 @@
 import axios from 'axios'
 import moment from "moment"
 import Router from 'next/router'
-import { Component } from "preact"
+import { Component } from "react"
 import Layout from "../components/Layout"
 import { Matches } from "../components/Match"
 import NewMatchForm from "../components/Form/NewMatchForm"
@@ -33,7 +33,7 @@ class Home extends Component {
       const { data } = await getMatches()
       this.setState({ matches: data.docs, isLoading: false })
     } catch (error) {
-      console.error("error componentDidMount()", error.response)
+      console.error("error componentDidMount()", error)
       this.setState({ isLoading: false })
     }
   }
@@ -71,12 +71,13 @@ class Home extends Component {
 
 
         <Matches
-          matches={matches || this.state.matches}
+          matches={matches}
           // currentTime={currentTime}
           isLoading={isLoading}
         />
 
         <NewMatchForm
+          user={user}
           isVisible={formVisible}
           toggleModal={this.toggleModal}
           sendData={this.handleSubmit}

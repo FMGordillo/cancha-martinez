@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import Modal from "../Modal";
 
 // TODO: Use this schema to check date
+// TODO: Must make this function
 const MatchSchema = Yup.object().shape({
   title: Yup.string()
     .min(2, "Too short!")
@@ -40,14 +41,22 @@ const Input = ({ field, form: {touched, errors}, ...props }) => {
 /**
  * TO DO: Make this work!
  */
-export default ({ isVisible, toggleModal, sendData }) => (
+export default ({ isVisible, toggleModal, sendData, user }) => (
   <Modal isVisible={isVisible} toggleModal={toggleModal}>
     <div className="box">
       <h2 className="title">Create new match</h2>
       <Formik
+        initialValues={{
+          owner: user.email
+        }}
         // validationSchema={MatchSchema}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true)
+          if(!values.email) {
+            console.info('No email, must handle this')
+            setSubmitting(false)
+            return
+          }
           console.log("submit", values);
           sendData(values)
             .then(() => {
@@ -63,11 +72,11 @@ export default ({ isVisible, toggleModal, sendData }) => (
         {({ values, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
           <form onSubmit={handleSubmit}>
             <Field name="title" required type="text" placeholder="Title" component={Input} />
-            <Field name="owner" required type="email" placeholder="Owner email" component={Input} />
+            <Field name="owner" required type="email" placeholder="Owner email" component={Input} disabled />
             <Field name="date" required type="date" placeholder="Reservation date and time" component={Input} />
             <div className="select">
               <Field name="time" component="select" required>
-                <option value="" selected disabled hidden>
+                <option defaultValue="Time" disabled hidden>
                   Time
                 </option>
                 <option value="17:00">17:00hs</option>

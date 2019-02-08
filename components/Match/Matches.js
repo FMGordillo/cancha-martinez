@@ -58,13 +58,29 @@ const Table = ({ props }) => (
     {props.children}
   </table>
 );
-const Thead = ({ props }) => (
-  <thead>
-    <tr>{props.children.children}</tr>
-  </thead>
-);
+const Thead = ({ props }) => {
+  const { children } = props.children.props;
+  return (
+    <thead>
+      <tr>{children}</tr>
+    </thead>
+  );
+};
 const Tbody = ({ props }) => <tbody>{props.children}</tbody>;
-const TrGroup = ({ props }) => props.children[0];
+
+const TrGroup = ({ props: { children } }) => {
+  if (!children[0]) {
+    return (
+      <tr>
+        <td>Loading...</td>
+        <td>Loading...</td>
+        <td>Loading...</td>
+      </tr>
+    );
+  } else {
+    return children[0];
+  }
+};
 const Tr = ({ props }) => {
   // TODO: Format this
   // const rowTime = moment(props.children[2].children[0])
@@ -74,6 +90,8 @@ const Tr = ({ props }) => {
   // TODO: Check this out.
   // const isCurrent = rowTime.isBetween(startRange, endRange)
   const isCurrent = false;
+
+  // console.log(props)
 
   return <tr className={isCurrent ? "is-selected" : ""}>{props.children}</tr>;
 };
@@ -96,7 +114,6 @@ const PaginationComponent = ({ props }) => {
     page,
     onPageChange
   } = props;
-  // console.log(props);
   return (
     <div className="columns">
       <div className="column" style={{ textAlign: "center" }}>
@@ -125,6 +142,6 @@ const PaginationComponent = ({ props }) => {
 };
 
 const LoadingComponent = ({ props: { loading, loadingText } }) => {
-  // console.log(loading, loadingText);
   if (loading) return <span>{loadingText}</span>;
+  else return null;
 };

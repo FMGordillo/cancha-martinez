@@ -25,15 +25,13 @@
     "passport": "^0.4.0",
     "preact": "^8.4.2",
     "preact-compat": "^3.18.4",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
     "react-table": "^6.8.6",
     "stylus": "^0.54.5",
     "yup": "^0.26.10"
   },
   "engines": {
     "node": "10.x.x"
-  },
-  "devDependencies": {
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0"
   }
 }
