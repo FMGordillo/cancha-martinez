@@ -40,7 +40,7 @@ const Navbar = ({ user }) => (
         <div className="navbar-end">
           {(user && (
             <span className="navbar-item">
-              Welcome, {user.name.split(" ")[0]}! ({" "}
+              Welcome, {user.name.split(" ")[0]}! (
               <Link href={"/logout"}>
                 <a>Sign out</a>
               </Link>
