@@ -12,7 +12,7 @@ app.prepare()
 	.then(() => {
 		const express = require("express");
 		const session = require("express-session");
-		const RedisStore = require("connect-redis")(session);
+		// const RedisStore = require("connect-redis")(session);
 		const passport = require("passport");
 		const WebAppStrategy = require("ibmcloud-appid").WebAppStrategy;
 
@@ -20,7 +20,7 @@ app.prepare()
 		const HOST = !dev ? 'cancha-martinez-test.mybluemix.net' : `localhost:${port}`;
 		const CALLBACK_URL = "/login/callback";
 
-		console.log(HOST);
+		// console.log(HOST);
 
 		server.use(
 			session({

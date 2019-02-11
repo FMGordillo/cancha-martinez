@@ -72,9 +72,9 @@ const TrGroup = ({ props: { children } }) => {
   if (!children[0]) {
     return (
       <tr>
-        <td>Loading...</td>
-        <td>Loading...</td>
-        <td>Loading...</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
       </tr>
     );
   } else {
@@ -82,6 +82,7 @@ const TrGroup = ({ props: { children } }) => {
   }
 };
 const Tr = ({ props }) => {
+  const { children } = props
   // TODO: Format this
   // const rowTime = moment(props.children[2].children[0])
   // const startRange = moment("3:00pm", "h:mma")
@@ -91,17 +92,18 @@ const Tr = ({ props }) => {
   // const isCurrent = rowTime.isBetween(startRange, endRange)
   const isCurrent = false;
 
-  // console.log(props)
-
-  return <tr className={isCurrent ? "is-selected" : ""}>{props.children}</tr>;
+  return <tr className={isCurrent ? "is-selected" : ""}>
+    {children}
+  </tr>;
 };
 const Th = ({ props }) => <th>{props.children}</th>;
 const Td = ({ props }) => {
-  // if(moment(props.children).isValid() && !!props.children ) {
-  //   return <td>{moment(props.children).local().format()}</td>;
-  // } else {
-  return <td>{props.children}</td>;
-  // }
+  if(moment(props.children).isValid() && !!props.children ) {
+    return <td>{moment(props.children).format('MMM Do, hh:mm a')}</td>;
+  } else {
+    // console.log('from td', props.children)
+    return <td>{props.children}</td>;
+  }
 };
 
 // TODO: End this

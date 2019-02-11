@@ -27,9 +27,9 @@ const Navbar = ({ user }) => (
     <div className="container">
       <div className="navbar-brand">
         <a className="navbar-item">
-          <img src="https://bulma.io/images/bulma-type-white.png" alt="Logo" />
+          {/*<img src="https://bulma.io/images/bulma-type-white.png" alt="Logo" />*/}
         </a>
-        <span className="navbar-burger burger" data-target="navbarMenuHeroB">
+        <span className="navbar-burger burger" data-target="navbarMenu">
           <span />
           <span />
           <span />
