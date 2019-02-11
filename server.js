@@ -1,4 +1,4 @@
-require("@zeit/next-preact/alias")();
+// require("@zeit/next-preact/alias")();
 const next = require("next");
 const { parse } = require("url");
 
