@@ -10,16 +10,7 @@ import { getMatches, createMatch } from "../lib/cloudant";
 
 class Home extends Component {
   static async getInitialProps({ res }) {
-    const { user } = res.req;
-
-    if (res && user) {
-      return { user };
-    } else {
-      res.writeHead(302, {
-        Location: "/login"
-      });
-      res.end();
-    }
+    return {};
   }
   state = {
     matches: [],
@@ -29,7 +20,7 @@ class Home extends Component {
   };
 
   async componentDidMount() {
-    this.updateMatches()
+    this.updateMatches();
   }
 
   updateMatches = async () => {
@@ -40,7 +31,7 @@ class Home extends Component {
       console.error("error componentDidMount()", error);
       this.setState({ isLoading: false });
     }
-  }
+  };
 
   toggleModal = () => {
     this.setState(({ formVisible }) => ({ formVisible: !formVisible }));
@@ -50,9 +41,9 @@ class Home extends Component {
   handleSubmit = async raw_data => {
     try {
       const reservation_date = moment(raw_data.date + " " + raw_data.time);
-      if(!reservation_date.isValid()) {
+      if (!reservation_date.isValid()) {
         this.toggleModal();
-        return
+        return;
       }
 
       const data = {
@@ -63,7 +54,7 @@ class Home extends Component {
       console.log("final data to submit", data);
       const matchCreated = await createMatch(data);
       this.toggleModal();
-      this.updateMatches()
+      this.updateMatches();
     } catch (error) {
       console.log("error", error);
     }
@@ -71,7 +62,10 @@ class Home extends Component {
 
   render() {
     const { matches, formVisible, currentTime, isLoading } = this.state;
-    const { user } = this.props;
+    const user = {
+      email: "famargor@ar.ibm.com",
+      name: "Facundo Gordillo"
+    };
     return (
       <Layout user={user}>
         <h1 className="title">Cancha Martinez</h1>
