@@ -10,7 +10,7 @@ const url = isProd
 const w3idUrl = isProd
 	? "https://w3id.sso.ibm.com"
 	: "https://w3id.alpha.sso.ibm.com";
-const partnerIDURL = `${url}/api/metadata`; // TODO: Create endpoint
+const partnerIDURL = `${url}/api/metadata`;
 const ssoLoginURL = `${w3idUrl}/auth/sps/samlidp2/saml20/logininitial?RequestBinding=HTTPPost&PartnerId=${url}/api/metadata&NameIdFormat=email&Target=${url}`;
 const ctrl = {};
 
@@ -56,7 +56,7 @@ ctrl.assert = async function(req, res) {
 	);
 	const parser = new Saml2Parser(response);
 	const userFromW3 = parser.toObject();
-	const subscriber = await Subscriber.findById(userFromW3.uid);
+	//const subscriber = await Subscriber.findById(userFromW3.uid); // TODO: Only with registered users
 
 	const token = jwt.sign(
 		{

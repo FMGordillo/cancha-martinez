@@ -49,6 +49,30 @@ app.prepare()
 		// 	})
 		// );
 
+		// Authentication
+		server.use("/api", auth, (err, req, res, next) => {
+			const path = url.parse(req.url).pathname;
+			if (
+				err.name === "UnauthorizedError" &&
+				path !== "/login" &&
+				path !== "/metadata" &&
+				path !== "/assert"
+			) {
+				logger.warn(
+					`Unauthorized ${req.method} to ${req.baseUrl}: ${
+						err.message
+					}`
+				);
+				responseService.json(res, 401, { message: err.message });
+			} else {
+				next();
+			}
+		});
+
+		// Set API endpoint
+		const apiRouter = require('./routers/api');
+		server.use('/api', apiRouter);
+
 		if (!dev) {
 			server.enable("trust proxy");
 
