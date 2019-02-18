@@ -1,5 +1,0 @@
----
-application:
-- name: cancha-martinez-test
-  memory: 512M
-  disk_quota: 1024M
