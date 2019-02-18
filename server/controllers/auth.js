@@ -14,15 +14,15 @@ const partnerIDURL = `${url}/api/metadata`;
 const ssoLoginURL = `${w3idUrl}/auth/sps/samlidp2/saml20/logininitial?RequestBinding=HTTPPost&PartnerId=${url}/api/metadata&NameIdFormat=email&Target=${url}`;
 const ctrl = {};
 
-// Create service provider
+// Create service provider (this is us)
 const spOptions = {
 	entity_id: `${partnerIDURL}.xml`,
-	private_key: fs.readFileSync("cert/key.pem").toString(), // TODO: Create file
-	certificate: fs.readFileSync("cert/cert.pem").toString(), // TODO: Create file
-	assert_endpoint: `${url}/api/assert` // TODO: Create endpoint
+	private_key: fs.readFileSync("cert_new/saml.key").toString(), // TODO: Create file
+	certificate: fs.readFileSync("cert_new/saml.pem").toString(), // TODO: Create file
+	assert_endpoint: `${url}/api/assert`
 };
 
-// Create identity provider
+// Create identity provider (this is IBM)
 const idpOptions = {
 	sso_login_url: ssoLoginURL,
 	certificates: fs.readFileSync("cert/samlidp2_CIS_PROD.pem").toString() // TODO: Create file
