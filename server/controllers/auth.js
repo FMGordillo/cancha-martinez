@@ -3,8 +3,6 @@ const Saml2Parser = require("saml2js");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
 
-console.log("env variables", process.env.VCAP_APPLICATION);
-
 // DEV
 // const url = "https://cancha-martinez-test.mybluemix.net";
 // const w3idUrl = "https://w3id.alpha.sso.ibm.com";
@@ -42,6 +40,7 @@ ctrl.metadata = function(req, res) {
 
 // Starting point for login
 ctrl.login = function(req, res) {
+	console.log("env variables", process.env.VCAP_APPLICATION);
 	sp.create_login_request_url(idp, {}, (err, loginUrl, requestId) => {
 		if (err) return res.send(500);
 		res.redirect(loginUrl);
