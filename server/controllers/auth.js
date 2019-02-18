@@ -18,15 +18,15 @@ const ctrl = {};
 // Create service provider (this is us)
 const spOptions = {
 	entity_id: `${partnerIDURL}.xml`,
-	private_key: fs.readFileSync("cert_new/saml.pem").toString(), // TODO: Create file
-	certificate: fs.readFileSync("cert_new/saml.crt").toString(), // TODO: Create file
+	private_key: fs.readFileSync("cert_new/saml.pem").toString(), // TODO: Create conditional (for prod or dev)
+	certificate: fs.readFileSync("cert_new/saml.crt").toString(), // TODO: Create conditional (for prod or dev)
 	assert_endpoint: `${url}/api/assert`
 };
 
 // Create identity provider (this is IBM)
 const idpOptions = {
 	sso_login_url: ssoLoginURL,
-	certificates: fs.readFileSync("cert/samlidp2_CIS_PROD.pem").toString() // TODO: Create file
+	certificates: fs.readFileSync("cert/samlidp2_CIS_PROD.pem").toString() // TODO: Create conditional (for prod or dev)
 };
 
 const sp = new saml2.ServiceProvider(spOptions);
