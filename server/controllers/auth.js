@@ -3,13 +3,17 @@ const Saml2Parser = require("saml2js");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
 
-// DEV
-const url = "https://cancha-martinez-test.mybluemix.net";
-const w3idUrl = "https://w3id.alpha.sso.ibm.com";
+const vcap_application = process.env.VCAP_APPLICATION
+	? JSON.parse(process.env.VCAP_APPLICATION)
+	: null;
+const isProd = vcap_application.application_name === "cancha-martinez";
 
-// PROD
-// const url = "https://cancha-martinez.mybluemix.net"
-// const w3idUrl = "https://w3id.sso.ibm.com"
+const url = isProd
+	? "https://cancha-martinez.mybluemix.net"
+	: "https://cancha-martinez-test.mybluemix.net";
+const w3idUrl = isProd
+	? "https://w3id.sso.ibm.com"
+	: "https://w3id.alpha.sso.ibm.com";
 
 const partnerIDURL = `${url}/api/metadata`;
 const ssoLoginURL = `${w3idUrl}/auth/sps/samlidp2/saml20/logininitial?RequestBinding=HTTPPost&PartnerId=${url}/api/metadata&NameIdFormat=email&Target=${url}`;
