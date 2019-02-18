@@ -43,11 +43,11 @@ export const Matches = ({ matches, currentTime, isLoading }) => (
       PaginationComponent={props => <PaginationComponent props={props} />}
       columns={[
         {
-          Header: "Title",
+          Header: "Título",
           accessor: "title"
         },
-        { Header: "Owner", accessor: "owner" },
-        { Header: "Reservation Date", accessor: "reservation_date" }
+        { Header: "Creador(a)", accessor: "owner" },
+        { Header: "Fecha y hora", accessor: "reservation_date" }
       ]}
     />
   </div>
@@ -82,7 +82,7 @@ const TrGroup = ({ props: { children } }) => {
   }
 };
 const Tr = ({ props }) => {
-  const { children } = props
+  const { children } = props;
   // TODO: Format this
   // const rowTime = moment(props.children[2].children[0])
   // const startRange = moment("3:00pm", "h:mma")
@@ -92,14 +92,12 @@ const Tr = ({ props }) => {
   // const isCurrent = rowTime.isBetween(startRange, endRange)
   const isCurrent = false;
 
-  return <tr className={isCurrent ? "is-selected" : ""}>
-    {children}
-  </tr>;
+  return <tr className={isCurrent ? "is-selected" : ""}>{children}</tr>;
 };
 const Th = ({ props }) => <th>{props.children}</th>;
 const Td = ({ props }) => {
-  if(moment(props.children).isValid() && !!props.children ) {
-    return <td>{moment(props.children).format('MMM Do, hh:mm a')}</td>;
+  if (moment(props.children).isValid() && !!props.children) {
+    return <td>{moment(props.children).format("MMM Do, hh:mm a")}</td>;
   } else {
     // console.log('from td', props.children)
     return <td>{props.children}</td>;
@@ -114,29 +112,34 @@ const PaginationComponent = ({ props }) => {
     canNext,
     nextText,
     page,
+    pages,
+    loading,
     onPageChange
   } = props;
+  console.log(props);
   return (
     <div className="columns">
-      <div className="column" style={{ textAlign: "center" }}>
+      <div className="column" style={{ textAlign: "right" }}>
         <button
           className="button is-link"
           disabled={!canPrevious}
           onClick={() => onPageChange(page - 1)}
         >
-          {previousText}
+          Anterior
         </button>
       </div>
       <div className="column" style={{ textAlign: "center" }}>
-        <span>Text</span>
+        {(loading && <span>Cargando...</span>) || (
+          <span>{`Página ${page + 1} de ${pages}`}</span>
+        )}
       </div>
-      <div className="column" style={{ textAlign: "center" }}>
+      <div className="column" style={{ textAlign: "left" }}>
         <button
           className="button is-link"
           disabled={!canNext}
           onClick={() => onPageChange(page + 1)}
         >
-          {nextText}
+          Siguiente
         </button>
       </div>
     </div>
@@ -144,6 +147,5 @@ const PaginationComponent = ({ props }) => {
 };
 
 const LoadingComponent = ({ props: { loading, loadingText } }) => {
-  if (loading) return <span>{loadingText}</span>;
-  else return null;
+  return null;
 };

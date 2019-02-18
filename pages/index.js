@@ -82,8 +82,12 @@ class Home extends Component {
     return (
       <Layout user={user}>
         <h1 className="title">Cancha Martinez</h1>
-        <button className="button is-info" onClick={this.toggleModal}>
-          Add new game
+        <button
+          className="button is-info"
+          style={{ marginBottom: 12 }}
+          onClick={this.toggleModal}
+        >
+          Crear nuevo partido ⚽️
         </button>
 
         <Matches

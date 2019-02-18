@@ -22,7 +22,7 @@ const Input = ({ field, form: { touched, errors }, ...props }) => {
   return (
     <div className="field">
       <label htmlFor={field.name} className="label">
-        {field.name.toUpperCase()}
+        {props.label}
       </label>
       <div className="control">
         <input id={field.name} className="input" {...field} {...props} />
@@ -40,7 +40,7 @@ const Input = ({ field, form: { touched, errors }, ...props }) => {
 export default ({ isVisible, toggleModal, sendData, user }) => (
   <Modal isVisible={isVisible} toggleModal={toggleModal}>
     <div className="box">
-      <h2 className="title">Create new match</h2>
+      <h2 className="title">Crear nuevo partido ⚽️</h2>
       <Formik
         initialValues={{
           owner: user.email
@@ -69,13 +69,15 @@ export default ({ isVisible, toggleModal, sendData, user }) => (
           <form onSubmit={handleSubmit}>
             <Field
               name="title"
+              label="Título"
               required
               type="text"
-              placeholder="Title"
+              placeholder="Título"
               component={Input}
             />
             <Field
               name="owner"
+              label="Creador(a)"
               required
               type="email"
               placeholder="Owner email"
@@ -84,23 +86,30 @@ export default ({ isVisible, toggleModal, sendData, user }) => (
             />
             <Field
               name="date"
+              label="Fecha"
               required
               type="date"
               placeholder="Reservation date and time"
               component={Input}
             />
-            <Field name="time" className="select" component="select" required>
-              <option value="">Select an option</option>
-              <option value="17:00">17:00hs</option>
-              <option value="18:00">18:00hs</option>
-              <option value="19:00">19:00hs</option>
-            </Field>
+            {/* Esto es una excepcion */}
+            <div className="field">
+              <label htmlFor="time" className="label">
+                Hora
+              </label>
+              <Field name="time" className="select" component="select" required>
+                <option value="">Select an option</option>
+                <option value="17:00">17:00hs</option>
+                <option value="18:00">18:00hs</option>
+                <option value="19:00">19:00hs</option>
+              </Field>
+            </div>
             <button
               className="button is-primary"
               type="submit"
               disabled={isSubmitting}
             >
-              Send
+              Enviar
             </button>
           </form>
         )}
