@@ -40,7 +40,7 @@ ctrl.metadata = function(req, res) {
 
 // Starting point for login
 ctrl.login = function(req, res) {
-	console.log("env variables", process.env.VCAP_APPLICATION);
+	console.log("env variables", process.env);
 	sp.create_login_request_url(idp, {}, (err, loginUrl, requestId) => {
 		if (err) return res.send(500);
 		res.redirect(loginUrl);
