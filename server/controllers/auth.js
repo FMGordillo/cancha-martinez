@@ -3,6 +3,8 @@ const Saml2Parser = require("saml2js");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
 
+console.log("env variables", process.env.VCAP_APPLICATION);
+
 // DEV
 // const url = "https://cancha-martinez-test.mybluemix.net";
 // const w3idUrl = "https://w3id.alpha.sso.ibm.com";
