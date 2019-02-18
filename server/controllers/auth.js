@@ -3,13 +3,14 @@ const Saml2Parser = require("saml2js");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
 
-const isProd = process.env.NODE_ENV === "production";
-const url = isProd
-	? "https://cancha-martinez.mybluemix.net"
-	: "https://cancha-martinez-test.mybluemix.net";
-const w3idUrl = isProd
-	? "https://w3id.sso.ibm.com"
-	: "https://w3id.alpha.sso.ibm.com";
+// DEV
+const url = "https://cancha-martinez-test.mybluemix.net";
+const w3idUrl = "https://w3id.alpha.sso.ibm.com";
+
+// PROD
+// const url = "https://cancha-martinez.mybluemix.net"
+// const w3idUrl = "https://w3id.sso.ibm.com"
+
 const partnerIDURL = `${url}/api/metadata`;
 const ssoLoginURL = `${w3idUrl}/auth/sps/samlidp2/saml20/logininitial?RequestBinding=HTTPPost&PartnerId=${url}/api/metadata&NameIdFormat=email&Target=${url}`;
 const ctrl = {};
