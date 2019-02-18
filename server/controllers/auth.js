@@ -17,8 +17,8 @@ const ctrl = {};
 // Create service provider (this is us)
 const spOptions = {
 	entity_id: `${partnerIDURL}.xml`,
-	private_key: fs.readFileSync("cert_new/saml.key").toString(), // TODO: Create file
-	certificate: fs.readFileSync("cert_new/saml.pem").toString(), // TODO: Create file
+	private_key: fs.readFileSync("cert_new/saml.pem").toString(), // TODO: Create file
+	certificate: fs.readFileSync("cert_new/saml.crt").toString(), // TODO: Create file
 	assert_endpoint: `${url}/api/assert`
 };
 
