@@ -4,12 +4,12 @@ const fs = require("fs");
 const jwt = require("jsonwebtoken");
 
 // DEV
-const url = "https://cancha-martinez-test.mybluemix.net";
-const w3idUrl = "https://w3id.alpha.sso.ibm.com";
+// const url = "https://cancha-martinez-test.mybluemix.net";
+// const w3idUrl = "https://w3id.alpha.sso.ibm.com";
 
 // PROD
-// const url = "https://cancha-martinez.mybluemix.net"
-// const w3idUrl = "https://w3id.sso.ibm.com"
+const url = "https://cancha-martinez.mybluemix.net";
+const w3idUrl = "https://w3id.sso.ibm.com";
 
 const partnerIDURL = `${url}/api/metadata`;
 const ssoLoginURL = `${w3idUrl}/auth/sps/samlidp2/saml20/logininitial?RequestBinding=HTTPPost&PartnerId=${url}/api/metadata&NameIdFormat=email&Target=${url}`;
