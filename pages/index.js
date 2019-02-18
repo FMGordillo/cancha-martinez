@@ -2,6 +2,8 @@ import axios from "axios";
 import moment from "moment";
 import Router from "next/router";
 import { Component } from "react";
+import base64 from "isomorphic-base64";
+
 import Layout from "../components/Layout";
 import { Matches } from "../components/Match";
 import NewMatchForm from "../components/Form/NewMatchForm";
@@ -9,8 +11,22 @@ import NewMatchForm from "../components/Form/NewMatchForm";
 import { getMatches, createMatch } from "../lib/cloudant";
 
 class Home extends Component {
-  static async getInitialProps({ res }) {
-    return {};
+  static async getInitialProps({ req: { cookies } }) {
+    const { token } = cookies;
+    if (token) {
+      const user = JSON.parse(base64.atob(token.split(".")[1]));
+      return { user };
+    }
+    return {
+      user: {
+        email: "user@mail.com",
+        firstName: "user",
+        fullName: "username",
+        iat: 0,
+        lastName: "name",
+        uid: "000000000"
+      }
+    };
   }
   state = {
     matches: [],
@@ -20,7 +36,7 @@ class Home extends Component {
   };
 
   async componentDidMount() {
-    this.updateMatches();
+    await this.updateMatches();
   }
 
   updateMatches = async () => {
@@ -62,10 +78,7 @@ class Home extends Component {
 
   render() {
     const { matches, formVisible, currentTime, isLoading } = this.state;
-    const user = {
-      email: "famargor@ar.ibm.com",
-      name: "Facundo Gordillo"
-    };
+    const { user } = this.props;
     return (
       <Layout user={user}>
         <h1 className="title">Cancha Martinez</h1>
