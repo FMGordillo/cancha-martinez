@@ -15,6 +15,7 @@ app.prepare()
 		const express = require("express");
 		const jwt = require("express-jwt");
 		const log4js = require("log4js");
+		const url = require("url");
 		const appName = require("./../package").name;
 		const bodyParser = require("body-parser");
 		const compression = require("compression");
@@ -70,8 +71,8 @@ app.prepare()
 		});
 
 		// Set API endpoint
-		const apiRouter = require('./routers/api');
-		server.use('/api', apiRouter);
+		const apiRouter = require("./routers/api");
+		server.use("/api", apiRouter);
 
 		if (!dev) {
 			server.enable("trust proxy");
