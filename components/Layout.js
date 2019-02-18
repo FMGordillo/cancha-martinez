@@ -1,31 +1,35 @@
-import { Component } from "preact"
-import Link from "next/link"
-import './style.styl'
+import { Component } from "react";
+import Link from "next/link";
+import "./style.styl";
 
 class Layout extends Component {
-  handleLogin = () => {}
-
   render() {
-    const { children } = this.props
+    const { children, user } = this.props;
     return (
       <div>
-        <Navbar />
+        <Navbar user={user} />
+        {/* Side button */}
+        <div className="side-button">
+          <button className="button">Consulta</button>
+        </div>
         <section className="section">
           <div className="container">{children}</div>
         </section>
+        {/* TODO: Notification goes here */}
+        {/*<Notification />*/}
       </div>
-    )
+    );
   }
 }
 
-const Navbar = () => (
+const Navbar = ({ user }) => (
   <navbar className="navbar is-dark">
     <div className="container">
       <div className="navbar-brand">
         <a className="navbar-item">
-          <img src="https://bulma.io/images/bulma-type-white.png" alt="Logo" />
+          {/*<img src="https://bulma.io/images/bulma-type-white.png" alt="Logo" />*/}
         </a>
-        <span className="navbar-burger burger" data-target="navbarMenuHeroB">
+        <span className="navbar-burger burger" data-target="navbarMenu">
           <span />
           <span />
           <span />
@@ -34,13 +38,20 @@ const Navbar = () => (
 
       <div id="navbarMenu" className="navbar-menu">
         <div className="navbar-end">
-          <a className="navbar-item">
-            <a>Login</a>
-          </a>
+          {(user && (
+            <span className="navbar-item">
+              Welcome, {user.name.split(" ")[0]}! (
+              <a style={{ textDecoration: "line-through" }}>Sign out</a>)
+            </span>
+          )) || (
+            <a className="navbar-item">
+              <a href="/login">Login</a>
+            </a>
+          )}
         </div>
       </div>
     </div>
   </navbar>
-)
+);
 
-export default Layout
+export default Layout;

@@ -25,21 +25,22 @@ export const Matches = ({ matches, currentTime, isLoading }) => (
   <div>
     {/* <MatchesOld matches={matches} /> */}
     <ReactTable
+      data={matches}
       loading={isLoading}
+      defaultPageSize={5}
       showPageJump={false}
-      showPageSizeOptions={false}
       defaultSortDesc={true}
-      defaultSorted={['reservation_date']}
+      showPageSizeOptions={false}
+      defaultSorted={["reservation_date"]}
+      TrComponent={props => <Tr props={props} />}
+      ThComponent={props => <Th props={props} />}
+      TdComponent={props => <Td props={props} />}
       TableComponent={props => <Table props={props} />}
       TheadComponent={props => <Thead props={props} />}
       TbodyComponent={props => <Tbody props={props} />}
       TrGroupComponent={props => <TrGroup props={props} />}
-      TrComponent={props => <Tr props={props} />}
-      ThComponent={props => <Th props={props} />}
-      TdComponent={props => <Td props={props} />}
-      PaginationComponent={props => <PaginationComponent props={props} />}
       LoadingComponent={props => <LoadingComponent props={props} />}
-      data={matches}
+      PaginationComponent={props => <PaginationComponent props={props} />}
       columns={[
         {
           Header: "Title",
@@ -48,7 +49,6 @@ export const Matches = ({ matches, currentTime, isLoading }) => (
         { Header: "Owner", accessor: "owner" },
         { Header: "Reservation Date", accessor: "reservation_date" }
       ]}
-      defaultPageSize={5}
     />
   </div>
 );
@@ -58,14 +58,31 @@ const Table = ({ props }) => (
     {props.children}
   </table>
 );
-const Thead = ({ props }) => (
-  <thead>
-    <tr>{props.children.children}</tr>
-  </thead>
-);
+const Thead = ({ props }) => {
+  const { children } = props.children.props;
+  return (
+    <thead>
+      <tr>{children}</tr>
+    </thead>
+  );
+};
 const Tbody = ({ props }) => <tbody>{props.children}</tbody>;
-const TrGroup = ({ props }) => props.children[0];
+
+const TrGroup = ({ props: { children } }) => {
+  if (!children[0]) {
+    return (
+      <tr>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+      </tr>
+    );
+  } else {
+    return children[0];
+  }
+};
 const Tr = ({ props }) => {
+  const { children } = props
   // TODO: Format this
   // const rowTime = moment(props.children[2].children[0])
   // const startRange = moment("3:00pm", "h:mma")
@@ -75,15 +92,18 @@ const Tr = ({ props }) => {
   // const isCurrent = rowTime.isBetween(startRange, endRange)
   const isCurrent = false;
 
-  return <tr className={isCurrent ? "is-selected" : ""}>{props.children}</tr>;
+  return <tr className={isCurrent ? "is-selected" : ""}>
+    {children}
+  </tr>;
 };
 const Th = ({ props }) => <th>{props.children}</th>;
 const Td = ({ props }) => {
-  // if(moment(props.children).isValid() && !!props.children ) {
-  //   return <td>{moment(props.children).local().format()}</td>;
-  // } else {
-  return <td>{props.children}</td>;
-  // }
+  if(moment(props.children).isValid() && !!props.children ) {
+    return <td>{moment(props.children).format('MMM Do, hh:mm a')}</td>;
+  } else {
+    // console.log('from td', props.children)
+    return <td>{props.children}</td>;
+  }
 };
 
 // TODO: End this
@@ -96,7 +116,6 @@ const PaginationComponent = ({ props }) => {
     page,
     onPageChange
   } = props;
-  console.log(props);
   return (
     <div className="columns">
       <div className="column" style={{ textAlign: "center" }}>
@@ -124,7 +143,7 @@ const PaginationComponent = ({ props }) => {
   );
 };
 
-const LoadingComponent = ({props: {loading, loadingText }}) => {
-  console.log(loading, loadingText)
-  if(loading) return <span>{loadingText}</span>
-}
+const LoadingComponent = ({ props: { loading, loadingText } }) => {
+  if (loading) return <span>{loadingText}</span>;
+  else return null;
+};
