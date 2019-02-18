@@ -65,11 +65,12 @@ ctrl.assert = async function(req, res) {
 			lastName: userFromW3.lastName,
 			fullName: userFromW3.cn,
 			email: userFromW3.emailaddress,
-			isAdmin: ctrl.isAdmin(userFromW3.emailaddress), // TODO: Check if necessary
-			isSubscriber: !!subscriber, // TODO: Check if necessary
+			// isAdmin: ctrl.isAdmin(userFromW3.emailaddress), // TODO: Check if necessary
+			// isSubscriber: !!subscriber, // TODO: Check if necessary
 			uid: userFromW3.uid
 		},
-		process.env.JWT_SECRET // TODO: Set this var
+		// process.env.JWT_SECRET // TODO: Set this var
+		"my-secret"
 	);
 
 	res.cookie("token", token);
