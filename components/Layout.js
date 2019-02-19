@@ -10,7 +10,14 @@ class Layout extends Component {
         <Navbar user={user} />
         {/* Side button */}
         <div className="side-button">
-          <button className="button">Consulta</button>
+          <button
+            className="button"
+            onClick={() => {
+              console.log("pending");
+            }}
+          >
+            Consulta
+          </button>
         </div>
         <section className="section">
           <div className="container">{children}</div>
