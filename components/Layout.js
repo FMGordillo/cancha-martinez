@@ -40,12 +40,12 @@ const Navbar = ({ user }) => (
         <div className="navbar-end">
           {(user && (
             <span className="navbar-item">
-              Welcome, {user.name.split(" ")[0]}! (
-              <a style={{ textDecoration: "line-through" }}>Sign out</a>)
+              ¡Hola, {user.firstName} {user.lastName}! (
+              <a style={{ textDecoration: "line-through" }}>Cerrar sesión</a>)
             </span>
           )) || (
             <a className="navbar-item">
-              <a href="/login">Login</a>
+              <a href="/login">Iniciar sesión</a>
             </a>
           )}
         </div>

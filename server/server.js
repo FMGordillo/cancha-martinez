@@ -21,6 +21,7 @@ app.prepare()
 		const compression = require("compression");
 		const cors = require("cors");
 		const cookieParser = require("cookie-parser");
+		const cookieMiddleware = require("universal-cookie-express");
 
 		const server = express();
 		const auth = jwt({
@@ -37,6 +38,7 @@ app.prepare()
 		server.use(compression()); // TODO: Is it necessary?
 		server.use(cors());
 		server.use(cookieParser());
+		server.use(cookieMiddleware());
 
 		// passport.use(
 		// 	new WebAppStrategy({
