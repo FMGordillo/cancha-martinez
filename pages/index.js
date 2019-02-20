@@ -92,7 +92,7 @@ class Home extends Component {
       <Layout user={user}>
         <h1 className="title">Cancha Martinez</h1>
         <button
-          className="button is-info"
+          className="button is-primary"
           style={{ marginBottom: 12 }}
           onClick={this.toggleFormModal}
         >

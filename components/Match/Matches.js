@@ -124,7 +124,7 @@ const PaginationComponent = ({ props }) => {
     <div className="columns">
       <div className="column" style={{ textAlign: "right" }}>
         <button
-          className="button is-link"
+          className="button is-primary"
           disabled={!canPrevious}
           onClick={() => onPageChange(page - 1)}
         >
@@ -138,7 +138,7 @@ const PaginationComponent = ({ props }) => {
       </div>
       <div className="column" style={{ textAlign: "left" }}>
         <button
-          className="button is-link"
+          className="button is-primary"
           disabled={!canNext}
           onClick={() => onPageChange(page + 1)}
         >
