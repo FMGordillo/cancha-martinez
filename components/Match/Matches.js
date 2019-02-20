@@ -99,7 +99,6 @@ const Td = ({ props }) => {
   if (moment(props.children).isValid() && !!props.children) {
     return <td>{moment(props.children).format("MMM Do, hh:mm a")}</td>;
   } else {
-    // console.log('from td', props.children)
     return <td>{props.children}</td>;
   }
 };
@@ -116,7 +115,7 @@ const PaginationComponent = ({ props }) => {
     loading,
     onPageChange
   } = props;
-  console.log(props);
+  // console.log(props);
   return (
     <div className="columns">
       <div className="column" style={{ textAlign: "right" }}>
