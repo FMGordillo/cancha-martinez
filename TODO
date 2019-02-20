@@ -1,6 +1,6 @@
 Todos:
   New:
-    ☐ Create calendar @high 
+    ☐ Improve calendar perfonmance @critical 
     ☐ Create second table for (upcoming) and (past) matches @high 
     ☐ Review UI/UX w/ someone @high 
     ☐ Handle for errors (Network errors) @critical @started(19-02-19 20:14)
@@ -11,4 +11,5 @@ Todos:
     ✔ Basic styling @low @done(19-02-19 20:13)
     ✔ Login support @critical @done(19-02-19 19:55)
     ✔ Submit support @high @done(19-02-19 20:12)
+    ✔ Create calendar @high @done(19-02-20 15:56)
   Cancelled:

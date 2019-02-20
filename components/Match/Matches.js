@@ -1,6 +1,6 @@
-import moment from "moment";
+import { isValid, format } from "date-fns"
 // import Match from "./Match"
-import ReactTable from "react-table";
+import ReactTable from "react-table"
 
 // const MatchesOld = ({ matches }) => (
 //   <table className="table">
@@ -51,22 +51,22 @@ export const Matches = ({ matches, currentTime, isLoading }) => (
       ]}
     />
   </div>
-);
+)
 
 const Table = ({ props }) => (
   <table className="table" style={{ minWidth: "100%" }}>
     {props.children}
   </table>
-);
+)
 const Thead = ({ props }) => {
-  const { children } = props.children.props;
+  const { children } = props.children.props
   return (
     <thead>
       <tr>{children}</tr>
     </thead>
-  );
-};
-const Tbody = ({ props }) => <tbody>{props.children}</tbody>;
+  )
+}
+const Tbody = ({ props }) => <tbody>{props.children}</tbody>
 
 const TrGroup = ({ props: { children } }) => {
   if (!children[0]) {
@@ -76,13 +76,13 @@ const TrGroup = ({ props: { children } }) => {
         <td>-</td>
         <td>-</td>
       </tr>
-    );
+    )
   } else {
-    return children[0];
+    return children[0]
   }
-};
+}
 const Tr = ({ props }) => {
-  const { children } = props;
+  const { children } = props
   // TODO: Format this
   // const rowTime = moment(props.children[2].children[0])
   // const startRange = moment("3:00pm", "h:mma")
@@ -90,18 +90,22 @@ const Tr = ({ props }) => {
 
   // TODO: Check this out.
   // const isCurrent = rowTime.isBetween(startRange, endRange)
-  const isCurrent = false;
+  const isCurrent = false
 
-  return <tr className={isCurrent ? "is-selected" : ""}>{children}</tr>;
-};
-const Th = ({ props }) => <th>{props.children}</th>;
+  return <tr className={isCurrent ? "is-selected" : ""}>{children}</tr>
+}
+const Th = ({ props }) => <th>{props.children}</th>
 const Td = ({ props }) => {
-  if (moment(props.children).isValid() && !!props.children) {
-    return <td>{moment(props.children).format("MMM Do, hh:mm a")}</td>;
-  } else {
-    return <td>{props.children}</td>;
+  try {
+    if (isValid(props.children) && !!props.children) {
+      return <td>{format(props.children, "MMM Do, hh:mm a")}</td>
+    } else {
+      return <td>{props.children}</td>
+    }
+  } catch (error) {
+    return <td>{props.children}</td>
   }
-};
+}
 
 // TODO: End this
 const PaginationComponent = ({ props }) => {
@@ -114,7 +118,7 @@ const PaginationComponent = ({ props }) => {
     pages,
     loading,
     onPageChange
-  } = props;
+  } = props
   // console.log(props);
   return (
     <div className="columns">
@@ -142,9 +146,9 @@ const PaginationComponent = ({ props }) => {
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const LoadingComponent = ({ props: { loading, loadingText } }) => {
-  return null;
-};
+  return null
+}

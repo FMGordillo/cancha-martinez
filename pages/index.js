@@ -1,84 +1,86 @@
-import axios from "axios";
-import moment from "moment";
-import Router from "next/router";
-import { Component } from "react";
-import base64 from "isomorphic-base64";
+import { parse, isValid } from "date-fns"
+import { Component } from "react"
+import { atob } from "isomorphic-base64"
 
-import Layout from "../components/Layout";
-import { Matches } from "../components/Match";
-import NewMatchForm from "../components/Form/NewMatchForm";
+import Layout from "../components/Layout"
+import Calendar from "../components/Calendar"
+import { Matches } from "../components/Match"
+import NewMatchForm from "../components/Form/NewMatchForm"
 
-import { getMatches, createMatch } from "../lib/cloudant";
+import "../components/calendar.styl"
+
+import { getMatches, createMatch } from "../lib/cloudant"
+import { DEFAULT_USER } from "../lib/constants"
 
 class Home extends Component {
   static async getInitialProps({ req: { cookies } }) {
-    const { token } = cookies;
+    const { token } = cookies
     if (token) {
-      const user = JSON.parse(base64.atob(token.split(".")[1]));
-      return { user };
+      const user = JSON.parse(atob(token.split(".")[1]))
+    } else {
+      const user = DEFAULT_USER
     }
+    const { data } = await getMatches()
+
     return {
-      user: {
-        email: "user@mail.com",
-        firstName: "user",
-        fullName: "username",
-        iat: 0,
-        lastName: "name",
-        uid: "000000000"
-      }
-    };
+      user: DEFAULT_USER,
+      matches: data.docs
+    }
   }
   state = {
-    matches: [],
-    currentTime: moment(),
+    matches: this.props.matches,
+    currentTime: new Date(),
     formVisible: false,
     isLoading: true
-  };
-
-  async componentDidMount() {
-    await this.updateMatches();
   }
 
+  /**
+   *
+   */
   updateMatches = async () => {
     try {
-      const { data } = await getMatches();
-      this.setState({ matches: data.docs, isLoading: false });
+      this.setState({ isLoading: true })
+      const { data } = await getMatches()
+      this.setState({ matches: data.docs, isLoading: false })
     } catch (error) {
-      console.error("error componentDidMount()", error);
-      this.setState({ isLoading: false });
+      console.error("error componentDidMount()", error)
+      this.setState({ isLoading: false })
     }
-  };
+  }
 
   toggleModal = () => {
-    this.setState(({ formVisible }) => ({ formVisible: !formVisible }));
-  };
+    this.setState(({ formVisible }) => ({ formVisible: !formVisible }))
+  }
 
-  // TODO: Handle submit!
-  handleSubmit = async raw_data => {
+  handleSubmit = async ({ title, owner, date, time }) => {
     try {
-      const reservation_date = moment(raw_data.date + " " + raw_data.time);
-      if (!reservation_date.isValid()) {
-        this.toggleModal();
-        return;
+      const reservation_date = parse(`${date} ${time}`)
+      if (!isValid(reservation_date)) {
+        this.toggleModal()
+        return
       }
 
       const data = {
-        title: raw_data.title,
-        owner: raw_data.owner,
-        reservation_date
-      };
-      console.log("final data to submit", data);
-      const matchCreated = await createMatch(data);
-      this.toggleModal();
-      this.updateMatches();
+        title: title,
+        owner: owner,
+        reservation_date,
+        end_reservation_date: reservation_date
+      }
+
+      console.log("final data to submit", data)
+      // TODO: Create handler for errors
+      await createMatch(data)
+      this.toggleModal()
+      this.updateMatches()
     } catch (error) {
-      console.log("error", error);
+      console.log("error", error)
     }
-  };
+  }
 
   render() {
-    const { matches, formVisible, currentTime, isLoading } = this.state;
-    const { user } = this.props;
+    const { matches, formVisible, currentTime, isLoading } = this.state
+    const { user } = this.props
+    // console.log(matches, this.props.matches)
     return (
       <Layout user={user}>
         <h1 className="title">Cancha Martinez</h1>
@@ -89,6 +91,12 @@ class Home extends Component {
         >
           Crear nuevo partido ⚽️
         </button>
+
+        <hr />
+
+        <Calendar matches={matches} />
+
+        <hr />
 
         <Matches
           matches={matches}
@@ -103,8 +111,8 @@ class Home extends Component {
           sendData={this.handleSubmit}
         />
       </Layout>
-    );
+    )
   }
 }
 
-export default Home;
+export default Home
