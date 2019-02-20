@@ -1,10 +1,11 @@
-import { parse, isValid } from "date-fns"
 import { Component } from "react"
 import { atob } from "isomorphic-base64"
+import { parse, isValid } from "date-fns"
 
 import Layout from "../components/Layout"
 import Calendar from "../components/Calendar"
 import { Matches } from "../components/Match"
+import SendMailForm from "../components/Form/SendMail"
 import NewMatchForm from "../components/Form/NewMatchForm"
 
 import "../components/calendar.styl"
@@ -15,15 +16,15 @@ import { DEFAULT_USER } from "../lib/constants"
 class Home extends Component {
   static async getInitialProps({ req: { cookies } }) {
     const { token } = cookies
-    if (token) {
-      const user = JSON.parse(atob(token.split(".")[1]))
-    } else {
-      const user = DEFAULT_USER
-    }
     const { data } = await getMatches()
-
+    let user = {}
+    if (token) {
+      user = JSON.parse(atob(token.split(".")[1]))
+    } else {
+      user = DEFAULT_USER
+    }
     return {
-      user: DEFAULT_USER,
+      user,
       matches: data.docs
     }
   }
@@ -31,6 +32,7 @@ class Home extends Component {
     matches: this.props.matches,
     currentTime: new Date(),
     formVisible: false,
+    sendMailVisible: false,
     isLoading: true
   }
 
@@ -48,15 +50,20 @@ class Home extends Component {
     }
   }
 
-  toggleModal = () => {
+  toggleFormModal = () => {
     this.setState(({ formVisible }) => ({ formVisible: !formVisible }))
+  }
+  toggleSendMailModal = () => {
+    this.setState(({ sendMailVisible }) => ({
+      sendMailVisible: !sendMailVisible
+    }))
   }
 
   handleSubmit = async ({ title, owner, date, time }) => {
     try {
       const reservation_date = parse(`${date} ${time}`)
       if (!isValid(reservation_date)) {
-        this.toggleModal()
+        this.toggleFormModal()
         return
       }
 
@@ -70,7 +77,7 @@ class Home extends Component {
       console.log("final data to submit", data)
       // TODO: Create handler for errors
       await createMatch(data)
-      this.toggleModal()
+      this.toggleFormModal()
       this.updateMatches()
     } catch (error) {
       console.log("error", error)
@@ -78,7 +85,7 @@ class Home extends Component {
   }
 
   render() {
-    const { matches, formVisible, currentTime, isLoading } = this.state
+    const { matches, formVisible, sendMailVisible, isLoading } = this.state
     const { user } = this.props
     // console.log(matches, this.props.matches)
     return (
@@ -87,7 +94,7 @@ class Home extends Component {
         <button
           className="button is-info"
           style={{ marginBottom: 12 }}
-          onClick={this.toggleModal}
+          onClick={this.toggleFormModal}
         >
           Crear nuevo partido ⚽️
         </button>
@@ -104,12 +111,17 @@ class Home extends Component {
           isLoading={isLoading}
         />
 
+        {/* Forms */}
         <NewMatchForm
           user={user}
           isVisible={formVisible}
-          toggleModal={this.toggleModal}
+          toggleModal={this.toggleFormModal}
           sendData={this.handleSubmit}
         />
+        {/* <SendMailForm
+          isVisible={sendMailVisible}
+          toggleModal={this.toggleSendMailModal}
+        /> */}
       </Layout>
     )
   }

@@ -93,7 +93,9 @@ class Calendar extends Component {
                   return isEqual
                 })
                 .map((match, i) => (
-                  <p className="match">{match.title}</p>
+                  <p className="match" key={i}>
+                    {match.title}
+                  </p>
                 ))}
             </div>
           </div>
