@@ -16,16 +16,23 @@ import { DEFAULT_USER } from "../lib/constants"
 class Home extends Component {
   static async getInitialProps({ req: { cookies } }) {
     const { token } = cookies
-    const { data } = await getMatches()
     let user = {}
-    if (token) {
-      user = JSON.parse(atob(token.split(".")[1]))
-    } else {
+    if (!token) {
       user = DEFAULT_USER
+    } else {
+      user = JSON.parse(atob(token.split(".")[1]))
     }
-    return {
-      user,
-      matches: data.docs
+    try {
+      const { data } = await getMatches()
+      return {
+        user,
+        matches: data.docs
+      }
+    } catch (error) {
+      return {
+        user,
+        matches: []
+      }
     }
   }
   state = {
