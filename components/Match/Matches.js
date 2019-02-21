@@ -1,4 +1,6 @@
 import { isValid, format } from "date-fns"
+import es from "date-fns/locale/es"
+
 // import Match from "./Match"
 import ReactTable from "react-table"
 
@@ -84,7 +86,7 @@ const TrGroup = ({ props: { children } }) => {
 const Tr = ({ props }) => {
   const { children } = props
   // TODO: Format this
-  // const rowTime = moment(props.children[2].children[0])
+  const rowTime = props.children[2].props.children
   // const startRange = moment("3:00pm", "h:mma")
   // const endRange = moment("5:00pm", "h:mma")
 
@@ -97,8 +99,10 @@ const Tr = ({ props }) => {
 const Th = ({ props }) => <th>{props.children}</th>
 const Td = ({ props }) => {
   try {
-    if (isValid(props.children) && !!props.children) {
-      return <td>{format(props.children, "MMM Do, hh:mm a")}</td>
+    if (format(props.children) !== "Invalid Date" && !!props.children) {
+      return (
+        <td>{format(props.children, "MMM DD, hh:mm a", { locale: es })}</td>
+      )
     } else {
       return <td>{props.children}</td>
     }
@@ -131,7 +135,7 @@ const PaginationComponent = ({ props }) => {
         </button>
       </div>
       <div className="column" style={{ textAlign: "center" }}>
-        <span>{`Página ${page + 1} de ${pages}`}</span>
+        <span>{`Página ${pages === 0 ? "0" : page + 1} de ${pages}`}</span>
       </div>
       <div className="column" style={{ textAlign: "left" }}>
         <button
