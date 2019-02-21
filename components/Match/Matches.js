@@ -119,7 +119,6 @@ const PaginationComponent = ({ props }) => {
     loading,
     onPageChange
   } = props
-  // console.log(props);
   return (
     <div className="columns">
       <div className="column" style={{ textAlign: "right" }}>
@@ -132,9 +131,7 @@ const PaginationComponent = ({ props }) => {
         </button>
       </div>
       <div className="column" style={{ textAlign: "center" }}>
-        {(loading && <span>Cargando...</span>) || (
-          <span>{`Página ${page + 1} de ${pages}`}</span>
-        )}
+        <span>{`Página ${page + 1} de ${pages}`}</span>
       </div>
       <div className="column" style={{ textAlign: "left" }}>
         <button
