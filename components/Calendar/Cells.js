@@ -42,9 +42,10 @@ export default ({ matches, currentMonth, selectedDate }) => {
                 )
                 return isEqual
               })
-              .map((match, i) => (
+              .map(({ title, reservation_date }, i) => (
                 <p className="match" key={i}>
-                  {match.title}
+                  {dateFns.format(reservation_date, "HH:mm")}{" "}
+                  <strong>{title}</strong>
                 </p>
               ))}
           </div>
