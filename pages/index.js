@@ -10,7 +10,7 @@ import NewMatchForm from "../components/Form/NewMatchForm"
 
 import "../components/calendar.styl"
 
-import { getMatches, createMatch } from "../lib/cloudant"
+import { getMatches, createMatch, getMatchByDate } from "../lib/cloudant"
 import { DEFAULT_USER } from "../lib/constants"
 
 class Home extends Component {
@@ -69,8 +69,17 @@ class Home extends Component {
   handleSubmit = async ({ title, owner, date, time }) => {
     try {
       const reservation_date = parse(`${date} ${time}`)
+      const similarMatch = await getMatchByDate(reservation_date)
+
       if (!isValid(reservation_date)) {
         this.toggleFormModal()
+        // HANDLE THIS!!
+        return
+      }
+
+      if (similarMatch.data.docs.length > 0) {
+        this.toggleFormModal()
+        // HANDLE THIS!!
         return
       }
 
@@ -81,7 +90,7 @@ class Home extends Component {
         end_reservation_date: reservation_date
       }
 
-      console.log("final data to submit", data)
+      // console.log("final data to submit", data)
       // TODO: Create handler for errors
       await createMatch(data)
       this.toggleFormModal()
