@@ -3,11 +3,22 @@ import Link from "next/link";
 import "./style.styl";
 
 class Layout extends Component {
+  state = {
+    navIsOpen: false
+  };
+
+  handleClick = () => {
+    this.setState(({ navIsOpen }) => ({ navIsOpen: !navIsOpen }));
+  };
   render() {
     const { children, user } = this.props;
     return (
       <div>
-        <Navbar user={user} />
+        <Navbar
+          user={user}
+          isOpen={this.state.navIsOpen}
+          toggle={this.handleClick}
+        />
         {/* Side button */}
         <div className="side-button">
           <button
@@ -29,21 +40,32 @@ class Layout extends Component {
   }
 }
 
-const Navbar = ({ user }) => (
-  <navbar className="navbar is-dark">
+const Navbar = ({ user, isOpen, toggle }) => (
+  <nav
+    className="navbar is-dark"
+    role="navigation"
+    aria-label="main navigation"
+  >
     <div className="container">
       <div className="navbar-brand">
         <a className="navbar-item">
           {/*<img src="https://bulma.io/images/bulma-type-white.png" alt="Logo" />*/}
         </a>
-        <span className="navbar-burger burger" data-target="navbarMenu">
+        <span
+          className={`navbar-burger ${isOpen ? "is-active" : ""}`}
+          data-target="navbarMenu"
+          onClick={toggle}
+        >
           <span />
           <span />
           <span />
         </span>
       </div>
 
-      <div id="navbarMenu" className="navbar-menu">
+      <div
+        id="navbarMenu"
+        className={`navbar-menu ${isOpen ? "is-active" : ""}`}
+      >
         <div className="navbar-end">
           {(user && (
             <span className="navbar-item">
@@ -58,7 +80,7 @@ const Navbar = ({ user }) => (
         </div>
       </div>
     </div>
-  </navbar>
+  </nav>
 );
 
 export default Layout;
