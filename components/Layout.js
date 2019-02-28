@@ -1,19 +1,26 @@
-import { Component } from "react";
-import Link from "next/link";
-import "./style.styl";
+import { Component } from "react"
+import Head from "next/head"
+import Link from "next/link"
+import "./style.styl"
 
 class Layout extends Component {
   state = {
     navIsOpen: false
-  };
+  }
 
   handleClick = () => {
-    this.setState(({ navIsOpen }) => ({ navIsOpen: !navIsOpen }));
-  };
+    this.setState(({ navIsOpen }) => ({ navIsOpen: !navIsOpen }))
+  }
   render() {
-    const { children, user } = this.props;
+    const { children, user, toggleHelpModal } = this.props
     return (
       <div>
+        <Head>
+          <title>Cancha Martinez</title>
+          <meta charset="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="shortcut icon" href="/static/favicon.ico" />
+        </Head>
         <Navbar
           user={user}
           isOpen={this.state.navIsOpen}
@@ -21,12 +28,7 @@ class Layout extends Component {
         />
         {/* Side button */}
         <div className="side-button">
-          <button
-            className="button"
-            onClick={() => {
-              console.log("pending");
-            }}
-          >
+          <button className="button" onClick={toggleHelpModal}>
             Consulta
           </button>
         </div>
@@ -36,7 +38,7 @@ class Layout extends Component {
         {/* TODO: Notification goes here */}
         {/*<Notification />*/}
       </div>
-    );
+    )
   }
 }
 
@@ -81,6 +83,6 @@ const Navbar = ({ user, isOpen, toggle }) => (
       </div>
     </div>
   </nav>
-);
+)
 
-export default Layout;
+export default Layout
