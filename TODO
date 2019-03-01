@@ -4,7 +4,6 @@ Todos:
     ☐ Review UI/UX w/ someone @high 
     ☐ Handle for errors (Network errors) @critical @started(19-02-19 20:14)
     ☐ Advanced styling @low 
-    ☐ Support mailing @started(19-02-26 00:05)
   Done:
     ✔ Basic project structure @low @done(19-02-19 19:55)
     ✔ Basic styling @low @done(19-02-19 20:13)
@@ -13,5 +12,6 @@ Todos:
     ✔ Submit error support (now showing an error inside the form) @low @done(19-02-28 19:48)
     ✔ Create calendar @high @done(19-02-20 15:56)
     ✔ Advanced project structure (restructuring?) @low @done(19-02-26 00:05)
+    ✔ Support mailing @started(19-02-26 00:05) @done(19-03-01 00:23) @lasted(3d18m25s)
   Cancelled:
     ✘ Create second table for (upcoming) and (past) matches @high @cancelled(19-02-26 00:04)
