@@ -1,10 +1,12 @@
-export default ({ field, form: { touched, errors }, ...props }) => (
+export default ({ field, form: { touched, errors }, children, ...props }) => (
   <div className="field">
     <label htmlFor={field.name} className="label">
       {props.label}
     </label>
     <div className="control">
-      <input id={field.name} className="input" {...field} {...props} />
+      <select name={field.name} id={field.name} className="select">
+        {children}
+      </select>
       {touched[field.name] && errors[field.name] && (
         <div className="error">{errors[field.name]}</div>
       )}

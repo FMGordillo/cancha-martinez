@@ -2,6 +2,7 @@ import { Formik, Field } from "formik"
 import * as Yup from "yup"
 import Modal from "../Modal"
 import Input from "./Elements/Input"
+import Option from "./Elements/Option"
 
 // TODO: Use this schema to check date
 // TODO: Must make this function
@@ -22,7 +23,7 @@ const MatchSchema = Yup.object().shape({
 /**
  * TO DO: Make this work!
  */
-export default ({ isVisible, toggleModal, sendData, user }) => (
+export default ({ isVisible, toggleModal, handleFormSubmit, user }) => (
   <Modal
     title="Crear nuevo partido ⚽️"
     isVisible={isVisible}
@@ -34,19 +35,20 @@ export default ({ isVisible, toggleModal, sendData, user }) => (
       }}
       // validationSchema={MatchSchema}
       onSubmit={(values, { setSubmitting, setStatus }) => {
-        setSubmitting(true)
+        setStatus({})
         if (!values.owner) {
           console.info("No email, must handle this")
           setSubmitting(false)
           return
         }
-        sendData(values)
+        handleFormSubmit(values)
           .then(() => {
+            setStatus({})
             setSubmitting(false)
           })
           .catch(err => {
-            setSubmitting(false)
             setStatus({ msg: err.message })
+            setSubmitting(false)
           })
       }}
     >
@@ -78,6 +80,12 @@ export default ({ isVisible, toggleModal, sendData, user }) => (
             component={Input}
           />
           {/* Esto es una excepcion */}
+          {/* <Field name="time" className="select" component={Option} required>
+            <option value="">Select an option</option>
+            <option value="17:00">17:00hs</option>
+            <option value="18:00">18:00hs</option>
+            <option value="19:00">19:00hs</option>
+          </Field> */}
           <div className="field">
             <label htmlFor="time" className="label">
               Hora

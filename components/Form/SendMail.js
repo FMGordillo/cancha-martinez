@@ -1,10 +1,9 @@
 import { Formik, Field } from "formik"
+import { CONSULT_REASONS } from "../../lib/constants"
 import Modal from "../Modal"
 import Textarea from "./Elements/Textarea"
 
-const mails = ["mgarone@ar.ibm.com", "baezad@ar.ibm.com"]
-
-const SendMail = ({ isVisible, toggleModal }) => {
+const SendEmail = ({ isVisible, toggleModal, handleFormSubmit }) => {
   return (
     <Modal
       title="Enviar consulta"
@@ -12,21 +11,56 @@ const SendMail = ({ isVisible, toggleModal }) => {
       toggleModal={toggleModal}
     >
       <Formik
-        onSubmit={(values, { setSubmitting }) => {
-          alert(JSON.stringify(values, null, 2))
-          setSubmitting(false)
+        onSubmit={(values, { setSubmitting, setStatus }) => {
+          handleFormSubmit(values)
+            .then(result => {
+              setSubmitting(false)
+            })
+            .catch(err => {
+              setStatus({
+                msg:
+                  "Error al enviar tu consulta. Si el error persiste, enviá un mail directo a famargor@ar.ibm.com"
+              })
+              setSubmitting(false)
+            })
         }}
       >
-        {({ handleSubmit, isSubmitting }) => (
+        {({ status, handleSubmit, isSubmitting, setStatus }) => (
           <form onSubmit={handleSubmit}>
+            <div className="field">
+              <label htmlFor="reason" className="label">
+                Razón de la consulta
+              </label>
+              <Field
+                name="reason"
+                className="select"
+                component="select"
+                required
+              >
+                <option value="">Seleccione una opción</option>
+                {Object.entries(CONSULT_REASONS).map(([key, value]) => (
+                  <option value={key}>{value}</option>
+                ))}
+              </Field>
+            </div>
             <Field
-              name="title"
-              label="Título"
               required
-              type="multitext"
-              placeholder="Título"
+              name="text"
+              label="Consulta"
+              placeholder="Escribí tu consulta acá. A mayor detalle, mejor respuesta desde nuestro lado."
               component={Textarea}
             />
+
+            {status && status.msg && (
+              <div className="notification is-warning">
+                <button
+                  className="delete"
+                  type="button"
+                  onClick={() => setStatus({})}
+                />
+                {status.msg}
+              </div>
+            )}
             <button
               className="button is-primary"
               type="submit"
@@ -41,4 +75,4 @@ const SendMail = ({ isVisible, toggleModal }) => {
   )
 }
 
-export default SendMail
+export default SendEmail
