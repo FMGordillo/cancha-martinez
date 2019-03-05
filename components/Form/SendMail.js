@@ -62,7 +62,7 @@ const SendEmail = ({ isVisible, toggleModal, handleFormSubmit }) => {
               </div>
             )}
             <button
-              className="button is-primary"
+              className={`button is-primary ${isSubmitting && "is-loading"}`}
               type="submit"
               disabled={isSubmitting}
             >

@@ -119,7 +119,7 @@ class Home extends Component {
     const { user } = this.props
     return (
       <Layout user={user} toggleHelpModal={this.toggleSendMailModal}>
-        <h1 className="title">Cancha Martinez</h1>
+        <h1 className="title is-1">Cancha Martinez</h1>
         <button
           className="button is-primary"
           style={{ marginBottom: 12 }}
@@ -129,7 +129,7 @@ class Home extends Component {
         </button>
 
         <hr />
-
+        <h2 className="title">Calendario de partidos</h2>
         <Calendar
           matches={matches}
           updateMatches={this.updateMatches}
@@ -137,7 +137,7 @@ class Home extends Component {
         />
 
         <hr />
-
+        <h2 className="title">Tabla de partidos</h2>
         <Matches matches={matches} isLoading={isLoading} />
 
         {/* Forms */}

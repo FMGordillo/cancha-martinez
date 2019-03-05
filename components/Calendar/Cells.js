@@ -31,7 +31,7 @@ export default ({ matches, currentMonth, selectedDate }) => {
           key={day}
           // onClick={() => this.onDateClick(dateFns.parse(cloneDay))}
         >
-          <span className="number">{formattedDate}</span>
+          <span className="number-cell">{formattedDate}</span>
           <span className="bg">{formattedDate}</span>
           <div className="matches">
             {matches

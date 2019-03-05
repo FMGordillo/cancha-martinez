@@ -43,11 +43,7 @@ class Layout extends Component {
 }
 
 const Navbar = ({ user, isOpen, toggle }) => (
-  <nav
-    className="navbar is-dark"
-    role="navigation"
-    aria-label="main navigation"
-  >
+  <nav className="navbar" role="navigation" aria-label="main navigation">
     <div className="container">
       <div className="navbar-brand">
         <a className="navbar-item">

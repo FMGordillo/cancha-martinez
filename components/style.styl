@@ -1,6 +1,20 @@
+:root 
+    --primary-color #64ba69
+    --primary-light-color #96ed98
+    --primary-dark-color #31893d
+
+    --secondary-color #4fc2f7
+    --secondary-light-color #8bf5ff
+    --secondary-dark-color #0092c4
+
 html, body 
     height: 100vh
-    background-color: #dcedd4
+    background-color #F5F5F6
+
+.navbar
+    background-color #64ba69
+#navbarMenu
+    background-color #96ed98
 
 .side-button 
     z-index 2
@@ -14,6 +28,20 @@ html, body
 .side-button button 
     height: 5em
 
+.button.is-primary
+    color black
+    background-color var(--secondary-color)
+    &:hover
+        color black
+        background-color var(--secondary-light-color)
+    &:disabled
+        color black
+        background-color var(--secondary-dark-color)
+    &:focus
+        color black
+    &:active
+        outline none
+
 .modal
     .is-inactive
         -webkit-transition: all .5s ease-in-out
@@ -25,3 +53,30 @@ html, body
         -moz-transition: all .5s ease-in-out
         -o-transition: all .5s ease-in-out
         transition: all .5s ease-in-out
+
+.table
+    min-width 100%
+    thead
+        background var(--primary-dark-color)
+        tr
+            th
+                color #fff
+    tbody
+        background var(--primary-light-color)
+        tr
+            
+            td
+                border none
+                white-space nowrap
+                overflow hidden
+                text-overflow ellipsis
+
+.pagination-bottom
+    .columns
+        display flex
+        .column:nth-child(1)
+            text-align right
+        .column:nth-child(2)
+            text-align center
+        .column:nth-child(3)
+            text-align left

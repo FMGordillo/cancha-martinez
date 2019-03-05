@@ -55,11 +55,7 @@ export const Matches = ({ matches, currentTime, isLoading }) => (
   </div>
 )
 
-const Table = ({ props }) => (
-  <table className="table" style={{ minWidth: "100%" }}>
-    {props.children}
-  </table>
-)
+const Table = ({ props }) => <table className="table">{props.children}</table>
 const Thead = ({ props }) => {
   const { children } = props.children.props
   return (
@@ -87,8 +83,6 @@ const Tr = ({ props }) => {
   const { children } = props
   // TODO: Format this
   const rowTime = props.children[2].props.children
-  // const startRange = moment("3:00pm", "h:mma")
-  // const endRange = moment("5:00pm", "h:mma")
 
   // TODO: Check this out.
   // const isCurrent = rowTime.isBetween(startRange, endRange)
@@ -98,15 +92,13 @@ const Tr = ({ props }) => {
 }
 const Th = ({ props }) => <th>{props.children}</th>
 const Td = ({ props }) => {
-  try {
-    if (format(props.children) !== "Invalid Date" && !!props.children) {
-      return (
-        <td>{format(props.children, "MMM DD, hh:mm a", { locale: es })}</td>
-      )
-    } else {
-      return <td>{props.children}</td>
-    }
-  } catch (error) {
+  if (format(props.children) !== "Invalid Date" && !!props.children) {
+    return (
+      // This is a date
+      <td>{format(props.children, "MMM DD, hh:mm a", { locale: es })}</td>
+    )
+  } else {
+    // This is text only
     return <td>{props.children}</td>
   }
 }
@@ -125,7 +117,7 @@ const PaginationComponent = ({ props }) => {
   } = props
   return (
     <div className="columns">
-      <div className="column" style={{ textAlign: "right" }}>
+      <div className="column">
         <button
           className="button is-primary"
           disabled={!canPrevious}
@@ -134,10 +126,10 @@ const PaginationComponent = ({ props }) => {
           Anterior
         </button>
       </div>
-      <div className="column" style={{ textAlign: "center" }}>
+      <div className="column">
         <span>{`Página ${pages === 0 ? "0" : page + 1} de ${pages}`}</span>
       </div>
-      <div className="column" style={{ textAlign: "left" }}>
+      <div className="column">
         <button
           className="button is-primary"
           disabled={!canNext}
