@@ -28,7 +28,7 @@ class Layout extends Component {
         />
         {/* Side button */}
         <div className="side-button">
-          <button className="button" onClick={toggleHelpModal}>
+          <button className="button is-primary" onClick={toggleHelpModal}>
             Consulta
           </button>
         </div>
