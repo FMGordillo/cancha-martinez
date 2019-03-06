@@ -88,10 +88,11 @@
     .body
         .cell
             position relative
-            height 5em
+            height 6em
             background var(--primary-light-color)
             overflow hidden
             transition 0.25s ease-out
+            border 0.25px solid #ccc
             &:last-child
                 border-right none
             .number-cell
@@ -127,7 +128,6 @@
             border-image linear-gradient(45deg, var(--secondary-light-color) 0%, var(--secondary-color) 40%)
             border-image-slice 1
         .row
-            border-bottom 1px solid var(--border-color)
             &:last-child
                 border-bottom none
         .disabled

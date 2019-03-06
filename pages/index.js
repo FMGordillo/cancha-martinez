@@ -6,7 +6,8 @@ import Layout from "../components/Layout"
 import Calendar from "../components/Calendar"
 import { Matches } from "../components/Match"
 import SendMailForm from "../components/Form/SendMail"
-import NewMatchForm from "../components/Form/NewMatchForm"
+import NewMatchForm from "../components/Form/NewMatch"
+import MatchesForm from "../components/Form/MatchesOfTheDay"
 
 import "../components/calendar.styl"
 
@@ -40,18 +41,35 @@ class Home extends Component {
   state = {
     matches: this.props.matches,
     currentTime: new Date(),
-    formVisible: false,
+    createMatchVisible: false,
     sendMailVisible: false,
+    matchesOfTheDayVisible: false,
+    matchesOfTheDaySelected: [],
     loading: true
   }
 
   toggleFormModal = () => {
-    this.setState(({ formVisible }) => ({ formVisible: !formVisible }))
+    this.setState(({ createMatchVisible: createMatchVisible }) => ({
+      createMatchVisible: !createMatchVisible
+    }))
   }
   toggleSendMailModal = () => {
     this.setState(({ sendMailVisible }) => ({
       sendMailVisible: !sendMailVisible
     }))
+  }
+  toggleFormModalWithParams = e => {
+    try {
+      if (Array.isArray(e)) {
+        this.setState({ matchesOfTheDaySelected: e })
+      }
+    } catch (error) {
+      return
+    } finally {
+      this.setState(({ matchesOfTheDayVisible }) => ({
+        matchesOfTheDayVisible: !matchesOfTheDayVisible
+      }))
+    }
   }
 
   updateMatches = async () => {
@@ -112,8 +130,10 @@ class Home extends Component {
   render() {
     const {
       matches,
-      formVisible,
+      createMatchVisible,
       sendMailVisible,
+      matchesOfTheDayVisible,
+      matchesOfTheDaySelected,
       loading: isLoading
     } = this.state
     const { user } = this.props
@@ -134,6 +154,7 @@ class Home extends Component {
           matches={matches}
           updateMatches={this.updateMatches}
           loading={isLoading}
+          handleClick={this.toggleFormModalWithParams}
         />
 
         <hr />
@@ -143,13 +164,19 @@ class Home extends Component {
         {/* Forms */}
         <NewMatchForm
           user={user}
-          isVisible={formVisible}
+          isVisible={createMatchVisible}
           toggleModal={this.toggleFormModal}
           handleFormSubmit={this.sendMatch}
         />
         <SendMailForm
           isVisible={sendMailVisible}
           toggleModal={this.toggleSendMailModal}
+          handleFormSubmit={this.sendEmail}
+        />
+        <MatchesForm
+          matches={matchesOfTheDaySelected}
+          isVisible={matchesOfTheDayVisible}
+          toggleModal={this.toggleFormModalWithParams}
           handleFormSubmit={this.sendEmail}
         />
       </Layout>

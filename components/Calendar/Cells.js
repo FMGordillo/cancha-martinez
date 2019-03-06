@@ -1,6 +1,6 @@
 import dateFns from "date-fns"
 
-export default ({ matches, currentMonth, selectedDate }) => {
+export default ({ matches, currentMonth, selectedDate, handleClick }) => {
   const monthStart = dateFns.startOfMonth(currentMonth)
   const monthEnd = dateFns.endOfMonth(currentMonth)
   const startDate = dateFns.startOfWeek(monthStart)
@@ -17,6 +17,13 @@ export default ({ matches, currentMonth, selectedDate }) => {
 
   while (day <= endDate) {
     for (let i = 0; i < 7; i++) {
+      const matchesFiltered = matches.filter(match => {
+        const isEqual = dateFns.isEqual(
+          dateFns.format(day, compareFormat),
+          dateFns.format(match.reservation_date, compareFormat)
+        )
+        return isEqual
+      })
       formattedDate = dateFns.format(day, dateFormat)
       // const cloneDay = day
       days.push(
@@ -29,25 +36,18 @@ export default ({ matches, currentMonth, selectedDate }) => {
               : ""
           }`}
           key={day}
-          // onClick={() => this.onDateClick(dateFns.parse(cloneDay))}
+          // TODO: Show events of the day
+          onClick={e => handleClick(matchesFiltered)}
         >
           <span className="number-cell">{formattedDate}</span>
           <span className="bg">{formattedDate}</span>
           <div className="matches">
-            {matches
-              .filter(match => {
-                const isEqual = dateFns.isEqual(
-                  dateFns.format(day, compareFormat),
-                  dateFns.format(match.reservation_date, compareFormat)
-                )
-                return isEqual
-              })
-              .map(({ title, reservation_date }, i) => (
-                <p className="match" key={i}>
-                  {dateFns.format(reservation_date, "HH:mm")}{" "}
-                  <strong>{title}</strong>
-                </p>
-              ))}
+            {matchesFiltered.map(({ title, reservation_date }, i) => (
+              <p className="match" key={i}>
+                {dateFns.format(reservation_date, "HH:mm")}{" "}
+                <strong>{title}</strong>
+              </p>
+            ))}
           </div>
         </div>
       )

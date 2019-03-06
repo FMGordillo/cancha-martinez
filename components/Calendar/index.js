@@ -3,7 +3,6 @@ import Header from "./Header"
 import Days from "./Days"
 import Cells from "./Cells"
 import dateFns from "date-fns"
-import es from "date-fns/locale/es"
 
 class Calendar extends Component {
   state = {
@@ -36,6 +35,7 @@ class Calendar extends Component {
           matches={this.props.matches}
           currentMonth={currentMonth}
           selectedDate={selectedDate}
+          handleClick={this.props.handleClick}
         />
       </div>
     )

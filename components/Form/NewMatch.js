@@ -95,6 +95,7 @@ export default ({ isVisible, toggleModal, handleFormSubmit, user }) => (
               <option value="17:00">17:00hs</option>
               <option value="18:00">18:00hs</option>
               <option value="19:00">19:00hs</option>
+              <option value="20:00">20:00hs</option>
             </Field>
           </div>
           {status && status.msg && (
