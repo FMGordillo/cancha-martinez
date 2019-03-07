@@ -1,16 +1,36 @@
-import { Component } from "react";
-import Link from "next/link";
-import "./style.styl";
+import { Component } from "react"
+import Head from "next/head"
+import Link from "next/link"
+import "./style.styl"
 
 class Layout extends Component {
+  state = {
+    navIsOpen: false
+  }
+
+  handleClick = () => {
+    this.setState(({ navIsOpen }) => ({ navIsOpen: !navIsOpen }))
+  }
   render() {
-    const { children, user } = this.props;
+    const { children, user, toggleHelpModal } = this.props
     return (
       <div>
-        <Navbar user={user} />
+        <Head>
+          <title>Cancha Martinez</title>
+          <meta charset="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="shortcut icon" href="/static/favicon.ico" />
+        </Head>
+        <Navbar
+          user={user}
+          isOpen={this.state.navIsOpen}
+          toggle={this.handleClick}
+        />
         {/* Side button */}
         <div className="side-button">
-          <button className="button">Consulta</button>
+          <button className="button is-primary" onClick={toggleHelpModal}>
+            Consulta
+          </button>
         </div>
         <section className="section">
           <div className="container">{children}</div>
@@ -18,25 +38,32 @@ class Layout extends Component {
         {/* TODO: Notification goes here */}
         {/*<Notification />*/}
       </div>
-    );
+    )
   }
 }
 
-const Navbar = ({ user }) => (
-  <navbar className="navbar is-dark">
+const Navbar = ({ user, isOpen, toggle }) => (
+  <nav className="navbar" role="navigation" aria-label="main navigation">
     <div className="container">
       <div className="navbar-brand">
         <a className="navbar-item">
           {/*<img src="https://bulma.io/images/bulma-type-white.png" alt="Logo" />*/}
         </a>
-        <span className="navbar-burger burger" data-target="navbarMenu">
+        <span
+          className={`navbar-burger ${isOpen ? "is-active" : ""}`}
+          data-target="navbarMenu"
+          onClick={toggle}
+        >
           <span />
           <span />
           <span />
         </span>
       </div>
 
-      <div id="navbarMenu" className="navbar-menu">
+      <div
+        id="navbarMenu"
+        className={`navbar-menu ${isOpen ? "is-active" : ""}`}
+      >
         <div className="navbar-end">
           {(user && (
             <span className="navbar-item">
@@ -51,7 +78,7 @@ const Navbar = ({ user }) => (
         </div>
       </div>
     </div>
-  </navbar>
-);
+  </nav>
+)
 
-export default Layout;
+export default Layout

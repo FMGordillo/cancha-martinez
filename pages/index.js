@@ -1,110 +1,187 @@
-import axios from "axios";
-import moment from "moment";
-import Router from "next/router";
-import { Component } from "react";
-import base64 from "isomorphic-base64";
+import { Component } from "react"
+import { atob } from "isomorphic-base64"
+import { parse, isValid } from "date-fns"
 
-import Layout from "../components/Layout";
-import { Matches } from "../components/Match";
-import NewMatchForm from "../components/Form/NewMatchForm";
+import Layout from "../components/Layout"
+import Calendar from "../components/Calendar"
+import { Matches } from "../components/Match"
+import SendMailForm from "../components/Form/SendMail"
+import NewMatchForm from "../components/Form/NewMatch"
+import MatchesForm from "../components/Form/MatchesOfTheDay"
 
-import { getMatches, createMatch } from "../lib/cloudant";
+import "../components/calendar.styl"
+
+import {
+  getMatches,
+  createMatch,
+  getMatchByDate,
+  sendConsultingEmail
+} from "../lib"
+import { DEFAULT_USER } from "../lib/constants"
 
 class Home extends Component {
   static async getInitialProps({ req: { cookies } }) {
-    const { token } = cookies;
-    if (token) {
-      const user = JSON.parse(base64.atob(token.split(".")[1]));
-      return { user };
-    }
-    return {
-      user: {
-        email: "user@mail.com",
-        firstName: "user",
-        fullName: "username",
-        iat: 0,
-        lastName: "name",
-        uid: "000000000"
+    const { token } = cookies
+    const user = !token ? DEFAULT_USER : JSON.parse(atob(token.split(".")[1]))
+    try {
+      const {
+        payload: { data }
+      } = await getMatches()
+      return {
+        user,
+        matches: data.docs
       }
-    };
+    } catch (error) {
+      return {
+        user,
+        matches: []
+      }
+    }
   }
   state = {
-    matches: [],
-    currentTime: moment(),
-    formVisible: false,
-    isLoading: true
-  };
+    matches: this.props.matches,
+    currentTime: new Date(),
+    createMatchVisible: false,
+    sendMailVisible: false,
+    matchesOfTheDayVisible: false,
+    matchesOfTheDaySelected: [],
+    loading: true
+  }
 
-  async componentDidMount() {
-    await this.updateMatches();
+  toggleFormModal = () => {
+    this.setState(({ createMatchVisible: createMatchVisible }) => ({
+      createMatchVisible: !createMatchVisible
+    }))
+  }
+  toggleSendMailModal = () => {
+    this.setState(({ sendMailVisible }) => ({
+      sendMailVisible: !sendMailVisible
+    }))
+  }
+  toggleFormModalWithParams = e => {
+    try {
+      if (Array.isArray(e)) {
+        this.setState({ matchesOfTheDaySelected: e })
+      }
+    } catch (error) {
+      return
+    } finally {
+      this.setState(({ matchesOfTheDayVisible }) => ({
+        matchesOfTheDayVisible: !matchesOfTheDayVisible
+      }))
+    }
   }
 
   updateMatches = async () => {
     try {
-      const { data } = await getMatches();
-      this.setState({ matches: data.docs, isLoading: false });
+      this.setState({ isLoading: true })
+      const {
+        payload: { data }
+      } = await getMatches()
+      this.setState({ matches: data.docs, isLoading: false })
     } catch (error) {
-      console.error("error componentDidMount()", error);
-      this.setState({ isLoading: false });
+      console.error("error componentDidMount()", error)
+      this.setState({ isLoading: false })
     }
-  };
+  }
 
-  toggleModal = () => {
-    this.setState(({ formVisible }) => ({ formVisible: !formVisible }));
-  };
+  sendMatch = async ({ title, owner, date, time }) => {
+    const reservation_date = parse(`${date} ${time}`)
+    const {
+      payload: { data: similarMatch }
+    } = await getMatchByDate(reservation_date)
+    if (!isValid(reservation_date)) {
+      throw new Error(
+        "Fecha no válida. Comuníquese en 'Consulta' para asistirte."
+      )
+    }
+    if (similarMatch.docs.length > 0) {
+      throw new Error(
+        "La fecha y hora especificada ya está reservada. Intentá con otra fecha y hora."
+      )
+    }
+    const data = {
+      title: title,
+      owner: owner,
+      reservation_date,
+      end_reservation_date: reservation_date
+    }
 
-  // TODO: Handle submit!
-  handleSubmit = async raw_data => {
+    createMatch(data)
+      .then(() => {
+        this.toggleFormModal()
+        this.updateMatches()
+      })
+      .catch(error => {
+        throw error
+      })
+  }
+
+  sendEmail = async data => {
     try {
-      const reservation_date = moment(raw_data.date + " " + raw_data.time);
-      if (!reservation_date.isValid()) {
-        this.toggleModal();
-        return;
-      }
-
-      const data = {
-        title: raw_data.title,
-        owner: raw_data.owner,
-        reservation_date
-      };
-      console.log("final data to submit", data);
-      const matchCreated = await createMatch(data);
-      this.toggleModal();
-      this.updateMatches();
+      const result = await sendConsultingEmail(this.props.user.email, data)
+      this.toggleSendMailModal()
     } catch (error) {
-      console.log("error", error);
+      console.log(error)
+      throw error
     }
-  };
+  }
 
   render() {
-    const { matches, formVisible, currentTime, isLoading } = this.state;
-    const { user } = this.props;
+    const {
+      matches,
+      createMatchVisible,
+      sendMailVisible,
+      matchesOfTheDayVisible,
+      matchesOfTheDaySelected,
+      loading: isLoading
+    } = this.state
+    const { user } = this.props
     return (
-      <Layout user={user}>
-        <h1 className="title">Cancha Martinez</h1>
+      <Layout user={user} toggleHelpModal={this.toggleSendMailModal}>
+        <h1 className="title is-1">Cancha Martinez</h1>
         <button
-          className="button is-info"
+          className="button is-primary"
           style={{ marginBottom: 12 }}
-          onClick={this.toggleModal}
+          onClick={this.toggleFormModal}
         >
           Crear nuevo partido ⚽️
         </button>
 
-        <Matches
+        <hr />
+        <h2 className="title">Calendario de partidos</h2>
+        <Calendar
           matches={matches}
-          // currentTime={currentTime}
-          isLoading={isLoading}
+          updateMatches={this.updateMatches}
+          loading={isLoading}
+          handleClick={this.toggleFormModalWithParams}
         />
 
+        <hr />
+        <h2 className="title">Tabla de partidos</h2>
+        <Matches matches={matches} isLoading={isLoading} />
+
+        {/* Forms */}
         <NewMatchForm
           user={user}
-          isVisible={formVisible}
-          toggleModal={this.toggleModal}
-          sendData={this.handleSubmit}
+          isVisible={createMatchVisible}
+          toggleModal={this.toggleFormModal}
+          handleFormSubmit={this.sendMatch}
+        />
+        <SendMailForm
+          isVisible={sendMailVisible}
+          toggleModal={this.toggleSendMailModal}
+          handleFormSubmit={this.sendEmail}
+        />
+        <MatchesForm
+          matches={matchesOfTheDaySelected}
+          isVisible={matchesOfTheDayVisible}
+          toggleModal={this.toggleFormModalWithParams}
+          handleFormSubmit={this.sendEmail}
         />
       </Layout>
-    );
+    )
   }
 }
 
-export default Home;
+export default Home
