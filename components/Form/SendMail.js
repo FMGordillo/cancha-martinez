@@ -4,6 +4,7 @@ import Modal from "../Modal"
 import Textarea from "./Elements/Textarea"
 
 const SendEmail = ({ isVisible, toggleModal, handleFormSubmit }) => {
+  console.log(process.env.NODE_ENV)
   return (
     <Modal
       title="Enviar consulta"
@@ -39,7 +40,9 @@ const SendEmail = ({ isVisible, toggleModal, handleFormSubmit }) => {
               >
                 <option value="">Seleccione una opción</option>
                 {Object.entries(CONSULT_REASONS).map(([key, value]) => (
-                  <option value={key}>{value}</option>
+                  <option key={key} value={key}>
+                    {value}
+                  </option>
                 ))}
               </Field>
             </div>

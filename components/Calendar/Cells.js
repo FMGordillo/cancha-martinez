@@ -36,7 +36,6 @@ export default ({ matches, currentMonth, selectedDate, handleClick }) => {
               : ""
           }`}
           key={day}
-          // TODO: Show events of the day
           onClick={e => handleClick(matchesFiltered)}
         >
           <span className="number-cell">{formattedDate}</span>
