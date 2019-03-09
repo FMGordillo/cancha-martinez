@@ -14,6 +14,7 @@ import "../components/calendar.styl"
 import {
   getMatches,
   createMatch,
+  deleteMatch,
   getMatchByDate,
   sendConsultingEmail
 } from "../lib"
@@ -117,6 +118,22 @@ class Home extends Component {
       })
   }
 
+  deleteMatch = async doc => {
+    const { email } = this.props.user
+    if (doc.owner === email) {
+      deleteMatch(doc)
+        .then(() => {
+          this.toggleFormModalWithParams()
+          this.updateMatches()
+        })
+        .catch(error => {
+          throw error
+        })
+    } else {
+      throw new Error("Este partido no te pertenece, no podés eliminarlo")
+    }
+  }
+
   sendEmail = async data => {
     try {
       const result = await sendConsultingEmail(this.props.user.email, data)
@@ -174,10 +191,12 @@ class Home extends Component {
           handleFormSubmit={this.sendEmail}
         />
         <MatchesForm
+          user={user}
           matches={matchesOfTheDaySelected}
           isVisible={matchesOfTheDayVisible}
           toggleModal={this.toggleFormModalWithParams}
           handleFormSubmit={this.sendEmail}
+          deleteMatch={this.deleteMatch}
         />
       </Layout>
     )

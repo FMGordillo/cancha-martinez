@@ -4,7 +4,6 @@ import Modal from "../Modal"
 import Textarea from "./Elements/Textarea"
 
 const SendEmail = ({ isVisible, toggleModal, handleFormSubmit }) => {
-  console.log(process.env.NODE_ENV)
   return (
     <Modal
       title="Enviar consulta"
