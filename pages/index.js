@@ -3,6 +3,7 @@ import { atob } from "isomorphic-base64"
 import { parse, isValid } from "date-fns"
 
 import Layout from "../components/Layout"
+import Tutorial from "../components/Tutorial"
 import Calendar from "../components/Calendar"
 import { Matches } from "../components/Match"
 import {
@@ -160,12 +161,15 @@ class Home extends Component {
       <Layout user={user} toggleHelpModal={this.toggleSendMailModal}>
         <h1 className="title is-1">Cancha Martinez</h1>
         <button
+          id="create-match"
           className="button is-primary"
           style={{ marginBottom: 12 }}
           onClick={this.toggleFormModal}
         >
           Crear nuevo partido ⚽️
         </button>
+
+        <Tutorial />
 
         <hr />
         <h2 className="title">Calendario de partidos</h2>
