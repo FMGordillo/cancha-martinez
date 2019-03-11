@@ -5,9 +5,11 @@ import { parse, isValid } from "date-fns"
 import Layout from "../components/Layout"
 import Calendar from "../components/Calendar"
 import { Matches } from "../components/Match"
-import SendMailForm from "../components/Form/SendMail"
-import NewMatchForm from "../components/Form/NewMatch"
-import MatchesForm from "../components/Form/MatchesOfTheDay"
+import {
+  SendEmail as SendEmailForm,
+  NewMatch as NewMatchForm,
+  MatchesOfTheDay as MatchesForm
+} from "../components/Form"
 
 import "../components/calendar.styl"
 
@@ -185,7 +187,7 @@ class Home extends Component {
           toggleModal={this.toggleFormModal}
           handleFormSubmit={this.sendMatch}
         />
-        <SendMailForm
+        <SendEmailForm
           isVisible={sendMailVisible}
           toggleModal={this.toggleSendMailModal}
           handleFormSubmit={this.sendEmail}

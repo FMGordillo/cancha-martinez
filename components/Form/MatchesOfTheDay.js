@@ -2,7 +2,13 @@ import Modal from "../Modal"
 import { format } from "date-fns"
 import es from "date-fns/locale/es"
 
-export default ({ user, matches, isVisible, toggleModal, deleteMatch }) => (
+export const MatchesOfTheDay = ({
+  user,
+  matches,
+  isVisible,
+  toggleModal,
+  deleteMatch
+}) => (
   <Modal
     title="Crear nuevo partido ⚽️"
     isVisible={isVisible}

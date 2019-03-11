@@ -23,7 +23,12 @@ const MatchSchema = Yup.object().shape({
 /**
  * TO DO: Make this work!
  */
-export default ({ isVisible, toggleModal, handleFormSubmit, user }) => (
+export const NewMatch = ({
+  isVisible,
+  toggleModal,
+  handleFormSubmit,
+  user
+}) => (
   <Modal
     title="Crear nuevo partido ⚽️"
     isVisible={isVisible}

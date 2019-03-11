@@ -3,7 +3,7 @@ import { CONSULT_REASONS } from "../../lib/constants"
 import Modal from "../Modal"
 import Textarea from "./Elements/Textarea"
 
-const SendEmail = ({ isVisible, toggleModal, handleFormSubmit }) => {
+export const SendEmail = ({ isVisible, toggleModal, handleFormSubmit }) => {
   return (
     <Modal
       title="Enviar consulta"
@@ -76,5 +76,3 @@ const SendEmail = ({ isVisible, toggleModal, handleFormSubmit }) => {
     </Modal>
   )
 }
-
-export default SendEmail
