@@ -25,7 +25,7 @@ export default ({ matches, currentMonth, selectedDate, handleClick }) => {
         return isEqual
       })
       formattedDate = dateFns.format(day, dateFormat)
-      // const cloneDay = day
+      const cloneDay = day
       days.push(
         <div
           className={`col cell ${
@@ -36,7 +36,7 @@ export default ({ matches, currentMonth, selectedDate, handleClick }) => {
               : ""
           }`}
           key={day}
-          onClick={e => handleClick(matchesFiltered)}
+          onClick={() => handleClick(matchesFiltered, cloneDay)}
         >
           <span className="number-cell">{formattedDate}</span>
           <span className="bg">{formattedDate}</span>

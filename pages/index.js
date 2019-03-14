@@ -33,46 +33,73 @@ class Home extends Component {
       } = await getMatches()
       return {
         user,
-        matches: data.docs
+        matches: data.docs,
+        error: false
       }
     } catch (error) {
+      console.log("getInitialProps() error", error)
       return {
         user,
-        matches: []
+        matches: [],
+        error: true
       }
     }
   }
   state = {
-    matches: this.props.matches,
+    matches: this.props.matches || [],
+    selectedDay: "",
     currentTime: new Date(),
+    matchesOfTheDaySelected: [],
+    loading: true,
+    error: this.props.error || false,
+    // Modals
     createMatchVisible: false,
     sendMailVisible: false,
-    matchesOfTheDayVisible: false,
-    matchesOfTheDaySelected: [],
-    loading: true
+    matchesOfTheDayVisible: false
   }
 
-  toggleFormModal = () => {
+  /**
+   * Create Match form
+   */
+  toggleFormModal = e => {
     this.setState(({ createMatchVisible: createMatchVisible }) => ({
       createMatchVisible: !createMatchVisible
     }))
   }
+
+  /**
+   * Send Mail form
+   */
   toggleSendMailModal = () => {
     this.setState(({ sendMailVisible }) => ({
       sendMailVisible: !sendMailVisible
     }))
   }
-  toggleFormModalWithParams = e => {
-    try {
-      if (Array.isArray(e)) {
-        this.setState({ matchesOfTheDaySelected: e })
-      }
-    } catch (error) {
-      return
-    } finally {
-      this.setState(({ matchesOfTheDayVisible }) => ({
-        matchesOfTheDayVisible: !matchesOfTheDayVisible
-      }))
+
+  /**
+   * Matches of the day + details
+   */
+  toggleFormModalWithParams = (e, date) => {
+    console.log(e, date)
+    if (Array.isArray(e)) {
+      this.setState({ matchesOfTheDaySelected: e })
+    }
+    if (date) {
+      this.setState({ selectedDay: date })
+    }
+    this.setState(({ matchesOfTheDayVisible }) => ({
+      matchesOfTheDayVisible: !matchesOfTheDayVisible
+    }))
+  }
+
+  /**
+   * From "Matches of the Day" to "New Match"
+   * TODO: Is there another name for this?
+   */
+  toggleFormModalFromMatches = matches => {
+    if (Array.isArray(matches)) {
+      this.toggleFormModalWithParams() // Turn off
+      this.toggleFormModal() // Turn on
     }
   }
 
@@ -140,6 +167,8 @@ class Home extends Component {
   sendEmail = async data => {
     try {
       const result = await sendConsultingEmail(this.props.user.email, data)
+      // const result = await sendConsultingEmail("", {})
+      console.log(result)
       this.toggleSendMailModal()
     } catch (error) {
       console.log(error)
@@ -154,12 +183,15 @@ class Home extends Component {
       sendMailVisible,
       matchesOfTheDayVisible,
       matchesOfTheDaySelected,
+      selectedDay,
       loading: isLoading
     } = this.state
     const { user } = this.props
     return (
       <Layout user={user} toggleHelpModal={this.toggleSendMailModal}>
-        <h1 className="title is-1">Cancha Martinez</h1>
+        <h1 id="title" className="title is-1">
+          Cancha Martinez
+        </h1>
         <button
           id="create-match"
           className="button is-primary"
@@ -190,6 +222,7 @@ class Home extends Component {
           isVisible={createMatchVisible}
           toggleModal={this.toggleFormModal}
           handleFormSubmit={this.sendMatch}
+          selectedDay={selectedDay}
         />
         <SendEmailForm
           isVisible={sendMailVisible}
@@ -200,6 +233,7 @@ class Home extends Component {
           user={user}
           matches={matchesOfTheDaySelected}
           isVisible={matchesOfTheDayVisible}
+          toggleModalForm={this.toggleFormModalFromMatches}
           toggleModal={this.toggleFormModalWithParams}
           handleFormSubmit={this.sendEmail}
           deleteMatch={this.deleteMatch}

@@ -1,3 +1,4 @@
+import { format } from "date-fns"
 import { Formik, Field } from "formik"
 import * as Yup from "yup"
 import Modal from "../Modal"
@@ -24,6 +25,7 @@ const MatchSchema = Yup.object().shape({
  * TO DO: Make this work!
  */
 export const NewMatch = ({
+  selectedDay,
   isVisible,
   toggleModal,
   handleFormSubmit,
@@ -36,7 +38,10 @@ export const NewMatch = ({
   >
     <Formik
       initialValues={{
-        owner: user.email
+        title: "",
+        owner: user.email,
+        date: "",
+        time: ""
       }}
       // validationSchema={MatchSchema}
       onSubmit={(values, { setSubmitting, setStatus }) => {
@@ -82,6 +87,7 @@ export const NewMatch = ({
             required
             type="date"
             placeholder="Reservation date and time"
+            value={(!!selectedDay && format(selectedDay, "YYYY-MM-DD")) || ""}
             component={Input}
           />
           {/* Esto es una excepcion */}

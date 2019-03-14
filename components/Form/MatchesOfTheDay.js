@@ -1,4 +1,5 @@
 import Modal from "../Modal"
+import { VALID_TIMES } from "../../lib/constants"
 import { format } from "date-fns"
 import es from "date-fns/locale/es"
 
@@ -7,6 +8,7 @@ export const MatchesOfTheDay = ({
   matches,
   isVisible,
   toggleModal,
+  toggleModalForm,
   deleteMatch
 }) => (
   <Modal
@@ -17,8 +19,9 @@ export const MatchesOfTheDay = ({
     {matches.length <= 0 ? (
       <p>No matches found 😒</p>
     ) : (
-      matches.map(match => (
+      matches.map((match, i) => (
         <Match
+          key={i}
           data={match}
           showDelete={user.email === match.owner}
           deleteMatch={deleteMatch}
@@ -26,7 +29,11 @@ export const MatchesOfTheDay = ({
       ))
     )}
 
-    <button className="button is-primary" disabled={matches.length >= 4}>
+    <button
+      className="button is-primary"
+      disabled={matches.length >= VALID_TIMES.length}
+      onClick={() => toggleModalForm(matches)}
+    >
       Crear nuevo partido
     </button>
   </Modal>
