@@ -6,7 +6,7 @@ export default ({ prevMonth, currentMonth, nextMonth }) => {
     <div className="header row flex-middle">
       <div className="col col-start">
         <div className="icon" onClick={prevMonth}>
-          ⏪
+          <span className="is-size-3">{"<"}</span>
         </div>
       </div>
       <div className="col col-center">
@@ -18,7 +18,7 @@ export default ({ prevMonth, currentMonth, nextMonth }) => {
       </div>
       <div className="col col-end">
         <div className="icon" onClick={nextMonth}>
-          ⏩
+          <span className="is-size-3">></span>
         </div>
       </div>
     </div>

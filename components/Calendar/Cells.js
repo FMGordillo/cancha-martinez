@@ -28,6 +28,7 @@ export default ({ matches, currentMonth, selectedDate, handleClick }) => {
       const cloneDay = day
       days.push(
         <div
+          id={formattedDate == 1 && "start-of-month"}
           className={`col cell ${
             !dateFns.isSameMonth(day, monthStart)
               ? "disabled"
