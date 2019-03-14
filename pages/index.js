@@ -80,7 +80,6 @@ class Home extends Component {
    * Matches of the day + details
    */
   toggleFormModalWithParams = (e, date) => {
-    console.log(e, date)
     if (Array.isArray(e)) {
       this.setState({ matchesOfTheDaySelected: e })
     }

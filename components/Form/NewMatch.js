@@ -37,10 +37,11 @@ export const NewMatch = ({
     toggleModal={toggleModal}
   >
     <Formik
+      enableReinitialize
       initialValues={{
         title: "",
         owner: user.email,
-        date: "",
+        date: (!!selectedDay && format(selectedDay, "YYYY-MM-DD")) || "",
         time: ""
       }}
       // validationSchema={MatchSchema}
@@ -87,7 +88,7 @@ export const NewMatch = ({
             required
             type="date"
             placeholder="Reservation date and time"
-            value={(!!selectedDay && format(selectedDay, "YYYY-MM-DD")) || ""}
+            // value={(!!selectedDay && format(selectedDay, "YYYY-MM-DD")) || ""}
             component={Input}
           />
           {/* Esto es una excepcion */}
