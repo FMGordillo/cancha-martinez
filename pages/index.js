@@ -2,9 +2,9 @@ import { Component } from "react"
 import { atob } from "isomorphic-base64"
 import { parse, isValid } from "date-fns"
 
-import Layout from "../components/Layout"
-import Tutorial from "../components/Tutorial"
-import Calendar from "../components/Calendar"
+import { Calendar, Layout, TermsAndConditions, Tutorial } from "../components"
+import { getItem, setItem } from "../lib/localStorage"
+import { TERMS_AND_CONDITIONS_KEY } from "../lib/constants"
 import { Matches } from "../components/Match"
 import {
   SendEmail as SendEmailForm,
@@ -53,9 +53,22 @@ class Home extends Component {
     loading: true,
     error: this.props.error || false,
     // Modals
+    termsAndConditionsVisible: false,
     createMatchVisible: false,
     sendMailVisible: false,
     matchesOfTheDayVisible: false
+  }
+
+  componentDidMount() {
+    const accepted = getItem(TERMS_AND_CONDITIONS_KEY)
+
+    console.log(accepted, localStorage.getItem(TERMS_AND_CONDITIONS_KEY))
+    if (!accepted) {
+      this.toggleTermsAndConditions()
+    }
+    this.setState({
+      loading: false
+    })
   }
 
   /**
@@ -73,6 +86,16 @@ class Home extends Component {
   toggleSendMailModal = () => {
     this.setState(({ sendMailVisible }) => ({
       sendMailVisible: !sendMailVisible
+    }))
+  }
+
+  /**
+   * Terms and Conditions modal
+   * To see more, check componentDidMount()
+   */
+  toggleTermsAndConditions = () => {
+    this.setState(({ termsAndConditionsVisible }) => ({
+      termsAndConditionsVisible: !termsAndConditionsVisible
     }))
   }
 
@@ -181,62 +204,73 @@ class Home extends Component {
       createMatchVisible,
       sendMailVisible,
       matchesOfTheDayVisible,
+      termsAndConditionsVisible,
       matchesOfTheDaySelected,
       selectedDay,
-      loading: isLoading
+      loading
     } = this.state
     const { user } = this.props
     return (
       <Layout user={user} toggleHelpModal={this.toggleSendMailModal}>
-        <h1 id="title" className="title is-1">
-          Cancha Martinez
-        </h1>
-        <button
-          id="create-match"
-          className="button is-primary"
-          style={{ marginBottom: 12 }}
-          onClick={this.toggleFormModal}
-        >
-          Crear nuevo partido ⚽️
-        </button>
+        {(loading && <span>Loading, please wait...</span>) || (
+          <div>
+            <h1 id="title" className="title is-1">
+              Cancha Martinez
+            </h1>
+            <button
+              id="create-match"
+              className="button is-primary"
+              style={{ marginBottom: 12 }}
+              onClick={this.toggleFormModal}
+            >
+              Crear nuevo partido ⚽️
+            </button>
 
-        <Tutorial />
+            <Tutorial />
+            <TermsAndConditions
+              isVisible={termsAndConditionsVisible}
+              acceptTerms={() => {
+                setItem(TERMS_AND_CONDITIONS_KEY, true)
+                this.toggleTermsAndConditions()
+              }}
+            />
 
-        <hr />
-        <h2 className="title">Calendario de partidos</h2>
-        <Calendar
-          matches={matches}
-          updateMatches={this.updateMatches}
-          loading={isLoading}
-          handleClick={this.toggleFormModalWithParams}
-        />
+            <hr />
+            <h2 className="title">Calendario de partidos</h2>
+            <Calendar
+              matches={matches}
+              updateMatches={this.updateMatches}
+              loading={loading}
+              handleClick={this.toggleFormModalWithParams}
+            />
 
-        <hr />
-        <h2 className="title">Tabla de partidos</h2>
-        <Matches matches={matches} isLoading={isLoading} />
+            <hr />
+            <h2 className="title">Tabla de partidos</h2>
+            <Matches matches={matches} isLoading={loading} />
 
-        {/* Forms */}
-        <NewMatchForm
-          user={user}
-          isVisible={createMatchVisible}
-          toggleModal={this.toggleFormModal}
-          handleFormSubmit={this.sendMatch}
-          selectedDay={selectedDay}
-        />
-        <SendEmailForm
-          isVisible={sendMailVisible}
-          toggleModal={this.toggleSendMailModal}
-          handleFormSubmit={this.sendEmail}
-        />
-        <MatchesForm
-          user={user}
-          matches={matchesOfTheDaySelected}
-          isVisible={matchesOfTheDayVisible}
-          toggleModalForm={this.toggleFormModalFromMatches}
-          toggleModal={this.toggleFormModalWithParams}
-          handleFormSubmit={this.sendEmail}
-          deleteMatch={this.deleteMatch}
-        />
+            <NewMatchForm
+              user={user}
+              isVisible={createMatchVisible}
+              toggleModal={this.toggleFormModal}
+              handleFormSubmit={this.sendMatch}
+              selectedDay={selectedDay}
+            />
+            <SendEmailForm
+              isVisible={sendMailVisible}
+              toggleModal={this.toggleSendMailModal}
+              handleFormSubmit={this.sendEmail}
+            />
+            <MatchesForm
+              user={user}
+              matches={matchesOfTheDaySelected}
+              isVisible={matchesOfTheDayVisible}
+              toggleModalForm={this.toggleFormModalFromMatches}
+              toggleModal={this.toggleFormModalWithParams}
+              handleFormSubmit={this.sendEmail}
+              deleteMatch={this.deleteMatch}
+            />
+          </div>
+        )}
       </Layout>
     )
   }

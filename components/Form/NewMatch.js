@@ -5,6 +5,8 @@ import Modal from "../Modal"
 import Input from "./Elements/Input"
 import Option from "./Elements/Option"
 
+import { VALID_TIMES } from "../../lib/constants"
+
 // TODO: Use this schema to check date
 // TODO: Must make this function
 const MatchSchema = Yup.object().shape({
@@ -104,10 +106,11 @@ export const NewMatch = ({
             </label>
             <Field name="time" className="select" component="select" required>
               <option value="">Select an option</option>
-              <option value="17:00">17:00hs</option>
-              <option value="18:00">18:00hs</option>
-              <option value="19:00">19:00hs</option>
-              <option value="20:00">20:00hs</option>
+              {VALID_TIMES.map((time, i) => (
+                <option key={i} value={time}>
+                  {time}hs
+                </option>
+              ))}
             </Field>
           </div>
           {status && status.msg && (

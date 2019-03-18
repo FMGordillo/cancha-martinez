@@ -4,7 +4,7 @@ import Days from "./Days"
 import Cells from "./Cells"
 import dateFns from "date-fns"
 
-class Calendar extends Component {
+export class Calendar extends Component {
   state = {
     currentMonth: new Date(),
     today: new Date()
@@ -41,5 +41,3 @@ class Calendar extends Component {
     )
   }
 }
-
-export default Calendar

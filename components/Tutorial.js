@@ -1,7 +1,7 @@
 import { Component } from "react"
 import Joyride, { STATUS } from "react-joyride"
 
-export default class extends Component {
+export class Tutorial extends Component {
   state = {
     run: true,
     steps: [

@@ -3,7 +3,7 @@ import Head from "next/head"
 import Link from "next/link"
 import "./style.styl"
 
-class Layout extends Component {
+export class Layout extends Component {
   state = {
     navIsOpen: false
   }
@@ -79,5 +79,3 @@ const Navbar = ({ user, isOpen, toggle }) => (
     </div>
   </nav>
 )
-
-export default Layout
