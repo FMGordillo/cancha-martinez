@@ -2,18 +2,22 @@ import { Component } from "react"
 import { atob } from "isomorphic-base64"
 import { parse, isValid } from "date-fns"
 
-import Layout from "../components/Layout"
-import Calendar from "../components/Calendar"
+import { Calendar, Layout, TermsAndConditions, Tutorial } from "../components"
+import { getItem, setItem } from "../lib/localStorage"
+import { TERMS_AND_CONDITIONS_KEY } from "../lib/constants"
 import { Matches } from "../components/Match"
-import SendMailForm from "../components/Form/SendMail"
-import NewMatchForm from "../components/Form/NewMatch"
-import MatchesForm from "../components/Form/MatchesOfTheDay"
+import {
+  SendEmail as SendEmailForm,
+  NewMatch as NewMatchForm,
+  MatchesOfTheDay as MatchesForm
+} from "../components/Form"
 
 import "../components/calendar.styl"
 
 import {
   getMatches,
   createMatch,
+  deleteMatch,
   getMatchByDate,
   sendConsultingEmail
 } from "../lib"
@@ -29,46 +33,95 @@ class Home extends Component {
       } = await getMatches()
       return {
         user,
-        matches: data.docs
+        matches: data.docs,
+        error: false
       }
     } catch (error) {
+      console.log("getInitialProps() error", error)
       return {
         user,
-        matches: []
+        matches: [],
+        error: true
       }
     }
   }
   state = {
-    matches: this.props.matches,
+    matches: this.props.matches || [],
+    selectedDay: "",
     currentTime: new Date(),
+    matchesOfTheDaySelected: [],
+    loading: true,
+    error: this.props.error || false,
+    // Modals
+    termsAndConditionsVisible: false,
     createMatchVisible: false,
     sendMailVisible: false,
-    matchesOfTheDayVisible: false,
-    matchesOfTheDaySelected: [],
-    loading: true
+    matchesOfTheDayVisible: false
   }
 
-  toggleFormModal = () => {
+  componentDidMount() {
+    const accepted = getItem(TERMS_AND_CONDITIONS_KEY)
+
+    console.log(accepted, localStorage.getItem(TERMS_AND_CONDITIONS_KEY))
+    if (!accepted) {
+      this.toggleTermsAndConditions()
+    }
+    this.setState({
+      loading: false
+    })
+  }
+
+  /**
+   * Create Match form
+   */
+  toggleFormModal = e => {
     this.setState(({ createMatchVisible: createMatchVisible }) => ({
       createMatchVisible: !createMatchVisible
     }))
   }
+
+  /**
+   * Send Mail form
+   */
   toggleSendMailModal = () => {
     this.setState(({ sendMailVisible }) => ({
       sendMailVisible: !sendMailVisible
     }))
   }
-  toggleFormModalWithParams = e => {
-    try {
-      if (Array.isArray(e)) {
-        this.setState({ matchesOfTheDaySelected: e })
-      }
-    } catch (error) {
-      return
-    } finally {
-      this.setState(({ matchesOfTheDayVisible }) => ({
-        matchesOfTheDayVisible: !matchesOfTheDayVisible
-      }))
+
+  /**
+   * Terms and Conditions modal
+   * To see more, check componentDidMount()
+   */
+  toggleTermsAndConditions = () => {
+    this.setState(({ termsAndConditionsVisible }) => ({
+      termsAndConditionsVisible: !termsAndConditionsVisible
+    }))
+  }
+
+  /**
+   * Matches of the day + details
+   */
+  toggleFormModalWithParams = (e, date) => {
+    if (Array.isArray(e)) {
+      this.setState({ matchesOfTheDaySelected: e })
+    }
+    if (date) {
+      this.setState({ selectedDay: date })
+    }
+    this.setState(({ matchesOfTheDayVisible }) => ({
+      matchesOfTheDayVisible: !matchesOfTheDayVisible
+    }))
+  }
+
+  /**
+   * From "Matches of the Day" to "New Match"
+   * TODO: Is there another name for this?
+   */
+  toggleFormModalFromMatches = matches => {
+    if (Array.isArray(matches)) {
+      this.toggleFormModalWithParams() // Turn off
+      this.toggleFormModal() // Turn on
     }
   }
 
@@ -117,9 +170,27 @@ class Home extends Component {
       })
   }
 
+  deleteMatch = async doc => {
+    const { email } = this.props.user
+    if (doc.owner === email) {
+      deleteMatch(doc)
+        .then(() => {
+          this.toggleFormModalWithParams()
+          this.updateMatches()
+        })
+        .catch(error => {
+          throw error
+        })
+    } else {
+      throw new Error("Este partido no te pertenece, no podés eliminarlo")
+    }
+  }
+
   sendEmail = async data => {
     try {
       const result = await sendConsultingEmail(this.props.user.email, data)
+      // const result = await sendConsultingEmail("", {})
+      console.log(result)
       this.toggleSendMailModal()
     } catch (error) {
       console.log(error)
@@ -133,52 +204,73 @@ class Home extends Component {
       createMatchVisible,
       sendMailVisible,
       matchesOfTheDayVisible,
+      termsAndConditionsVisible,
       matchesOfTheDaySelected,
-      loading: isLoading
+      selectedDay,
+      loading
     } = this.state
     const { user } = this.props
     return (
       <Layout user={user} toggleHelpModal={this.toggleSendMailModal}>
-        <h1 className="title is-1">Cancha Martinez</h1>
-        <button
-          className="button is-primary"
-          style={{ marginBottom: 12 }}
-          onClick={this.toggleFormModal}
-        >
-          Crear nuevo partido ⚽️
-        </button>
+        {(loading && <span>Loading, please wait...</span>) || (
+          <div>
+            <h1 id="title" className="title is-1">
+              Cancha Martinez
+            </h1>
+            <button
+              id="create-match"
+              className="button is-primary"
+              style={{ marginBottom: 12 }}
+              onClick={this.toggleFormModal}
+            >
+              Crear nuevo partido ⚽️
+            </button>
 
-        <hr />
-        <h2 className="title">Calendario de partidos</h2>
-        <Calendar
-          matches={matches}
-          updateMatches={this.updateMatches}
-          loading={isLoading}
-          handleClick={this.toggleFormModalWithParams}
-        />
+            <Tutorial />
+            <TermsAndConditions
+              isVisible={termsAndConditionsVisible}
+              acceptTerms={() => {
+                setItem(TERMS_AND_CONDITIONS_KEY, true)
+                this.toggleTermsAndConditions()
+              }}
+            />
 
-        <hr />
-        <h2 className="title">Tabla de partidos</h2>
-        <Matches matches={matches} isLoading={isLoading} />
+            <hr />
+            <h2 className="title">Calendario de partidos</h2>
+            <Calendar
+              matches={matches}
+              updateMatches={this.updateMatches}
+              loading={loading}
+              handleClick={this.toggleFormModalWithParams}
+            />
 
-        {/* Forms */}
-        <NewMatchForm
-          user={user}
-          isVisible={createMatchVisible}
-          toggleModal={this.toggleFormModal}
-          handleFormSubmit={this.sendMatch}
-        />
-        <SendMailForm
-          isVisible={sendMailVisible}
-          toggleModal={this.toggleSendMailModal}
-          handleFormSubmit={this.sendEmail}
-        />
-        <MatchesForm
-          matches={matchesOfTheDaySelected}
-          isVisible={matchesOfTheDayVisible}
-          toggleModal={this.toggleFormModalWithParams}
-          handleFormSubmit={this.sendEmail}
-        />
+            <hr />
+            <h2 className="title">Tabla de partidos</h2>
+            <Matches matches={matches} isLoading={loading} />
+
+            <NewMatchForm
+              user={user}
+              isVisible={createMatchVisible}
+              toggleModal={this.toggleFormModal}
+              handleFormSubmit={this.sendMatch}
+              selectedDay={selectedDay}
+            />
+            <SendEmailForm
+              isVisible={sendMailVisible}
+              toggleModal={this.toggleSendMailModal}
+              handleFormSubmit={this.sendEmail}
+            />
+            <MatchesForm
+              user={user}
+              matches={matchesOfTheDaySelected}
+              isVisible={matchesOfTheDayVisible}
+              toggleModalForm={this.toggleFormModalFromMatches}
+              toggleModal={this.toggleFormModalWithParams}
+              handleFormSubmit={this.sendEmail}
+              deleteMatch={this.deleteMatch}
+            />
+          </div>
+        )}
       </Layout>
     )
   }

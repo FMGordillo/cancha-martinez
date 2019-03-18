@@ -45,6 +45,7 @@
 .col-start
     justify-content flex-start
     text-align left
+    margin-left 24px
 
 .col-center
     justify-content center
@@ -53,6 +54,7 @@
 .col-end
     justify-content flex-end
     text-align right
+    margin-right 24px
 
 .calendar
     display block
@@ -82,7 +84,7 @@
         text-transform uppercase
         font-weight 400
         background var(--primary-color)
-        color var(--text-color-light)
+        color #fff
         font-size 70%
         padding .75em 0
     .body
@@ -93,6 +95,7 @@
             overflow hidden
             transition 0.25s ease-out
             border 0.25px solid #ccc
+            cursor pointer
             &:last-child
                 border-right none
             .number-cell
@@ -123,6 +126,7 @@
                     text-overflow: ellipsis
                     white-space: nowrap
                     overflow: hidden
+                    cursor pointer
         .selected
             border-left 10px solid transparent
             border-image linear-gradient(45deg, var(--secondary-light-color) 0%, var(--secondary-color) 40%)

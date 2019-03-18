@@ -3,7 +3,7 @@ import Head from "next/head"
 import Link from "next/link"
 import "./style.styl"
 
-class Layout extends Component {
+export class Layout extends Component {
   state = {
     navIsOpen: false
   }
@@ -67,8 +67,7 @@ const Navbar = ({ user, isOpen, toggle }) => (
         <div className="navbar-end">
           {(user && (
             <span className="navbar-item">
-              ¡Hola, {user.firstName} {user.lastName}! (
-              <a style={{ textDecoration: "line-through" }}>Cerrar sesión</a>)
+              ¡Hola, {user.firstName} {user.lastName}!
             </span>
           )) || (
             <a className="navbar-item">
@@ -80,5 +79,3 @@ const Navbar = ({ user, isOpen, toggle }) => (
     </div>
   </nav>
 )
-
-export default Layout

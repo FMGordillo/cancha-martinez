@@ -4,10 +4,10 @@ import Days from "./Days"
 import Cells from "./Cells"
 import dateFns from "date-fns"
 
-class Calendar extends Component {
+export class Calendar extends Component {
   state = {
     currentMonth: new Date(),
-    selectedDate: new Date()
+    today: new Date()
   }
 
   nextMonth = () => {
@@ -22,7 +22,7 @@ class Calendar extends Component {
   }
 
   render() {
-    const { currentMonth, selectedDate } = this.state
+    const { currentMonth, today } = this.state
     return (
       <div className="calendar">
         <Header
@@ -34,12 +34,10 @@ class Calendar extends Component {
         <Cells
           matches={this.props.matches}
           currentMonth={currentMonth}
-          selectedDate={selectedDate}
+          selectedDate={today}
           handleClick={this.props.handleClick}
         />
       </div>
     )
   }
 }
-
-export default Calendar

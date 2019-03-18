@@ -25,9 +25,10 @@ export default ({ matches, currentMonth, selectedDate, handleClick }) => {
         return isEqual
       })
       formattedDate = dateFns.format(day, dateFormat)
-      // const cloneDay = day
+      const cloneDay = day
       days.push(
         <div
+          id={(formattedDate == 1 && "start-of-month") || undefined}
           className={`col cell ${
             !dateFns.isSameMonth(day, monthStart)
               ? "disabled"
@@ -36,8 +37,7 @@ export default ({ matches, currentMonth, selectedDate, handleClick }) => {
               : ""
           }`}
           key={day}
-          // TODO: Show events of the day
-          onClick={e => handleClick(matchesFiltered)}
+          onClick={() => handleClick(matchesFiltered, cloneDay)}
         >
           <span className="number-cell">{formattedDate}</span>
           <span className="bg">{formattedDate}</span>
