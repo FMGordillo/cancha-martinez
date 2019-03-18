@@ -12,8 +12,14 @@ export const SendEmail = ({ isVisible, toggleModal, handleFormSubmit }) => {
     >
       <Formik
         onSubmit={(values, { setSubmitting, setStatus }) => {
+          setStatus({})
           handleFormSubmit(values)
             .then(result => {
+              if (!result)
+                setStatus({
+                  msg:
+                    "Error al enviar tu consulta. Si el error persiste, enviá un mail directo a famargor@ar.ibm.com"
+                })
               setSubmitting(false)
             })
             .catch(err => {
