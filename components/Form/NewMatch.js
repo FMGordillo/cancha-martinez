@@ -105,7 +105,7 @@ export const NewMatch = ({
               Hora
             </label>
             <Field name="time" className="select" component="select" required>
-              <option value="">Select an option</option>
+              <option value="">Seleccioná una opción</option>
               {VALID_TIMES.map((time, i) => (
                 <option key={i} value={time}>
                   {time}hs
