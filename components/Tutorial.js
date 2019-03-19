@@ -88,6 +88,11 @@ export class Tutorial extends Component {
         steps={steps}
         locale={locale}
         callback={this.handleTutorialCallback}
+        styles={{
+          options: {
+            zIndex: 30
+          }
+        }}
       />
     )
   }
