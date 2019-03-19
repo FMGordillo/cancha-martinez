@@ -212,7 +212,7 @@ class Home extends Component {
         {(loading && <span>Loading, please wait...</span>) || (
           <div>
             <h1 id="title" className="title is-1">
-              Cancha Martinez
+              Cancha Martínez
             </h1>
             <button
               id="create-match"
