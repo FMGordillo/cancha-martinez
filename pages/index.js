@@ -61,8 +61,6 @@ class Home extends Component {
 
   componentDidMount() {
     const accepted = getItem(TERMS_AND_CONDITIONS_KEY)
-
-    console.log(accepted, localStorage.getItem(TERMS_AND_CONDITIONS_KEY))
     if (!accepted) {
       this.toggleTermsAndConditions()
     }
@@ -189,11 +187,10 @@ class Home extends Component {
   sendEmail = async data => {
     try {
       const result = await sendConsultingEmail(this.props.user.email, data)
-      // const result = await sendConsultingEmail("", {})
-      console.log(result)
-      this.toggleSendMailModal()
+      if (!result.error) this.toggleSendMailModal()
+      else throw result
     } catch (error) {
-      console.log(error)
+      console.log("error sending mail, in index.js", error)
       throw error
     }
   }
