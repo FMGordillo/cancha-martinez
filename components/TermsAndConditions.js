@@ -4,7 +4,7 @@ export const TermsAndConditions = ({ acceptTerms, isVisible }) => (
   <Modal
     title="Términos y Condiciones"
     isVisible={isVisible}
-    toggleModal={() => console.log("not implemented, TESTING")}
+    toggleModal={() => console.log("NOPE.jpg")}
   >
     <div id="terms-and-conditions">
       <p>
@@ -15,9 +15,13 @@ export const TermsAndConditions = ({ acceptTerms, isVisible }) => (
         </strong>
       </p>
 
-      <p>
-        Para usar esta aplicación, debe aceptar los términos y condiciones al
-        final de esta pantalla (haciendo clic en el botón)
+      <br />
+
+      <p style={{ color: "red" }}>
+        <b>
+          NOTA: Para usar esta aplicación, debe aceptar los términos y
+          condiciones al final de esta pantalla.
+        </b>
       </p>
       <br />
       <p>
@@ -208,7 +212,6 @@ export const TermsAndConditions = ({ acceptTerms, isVisible }) => (
         diferendos o cuestionamiento.
       </p>
     </div>
-
     <button className="button is-primary" onClick={acceptTerms}>
       Acepto estos términos y condiciones
     </button>
