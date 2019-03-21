@@ -2,7 +2,13 @@ import { Component } from "react"
 import { atob } from "isomorphic-base64"
 import { parse, isValid } from "date-fns"
 
-import { Calendar, Layout, TermsAndConditions, Tutorial } from "../components"
+import {
+  Calendar,
+  Layout,
+  TermsAndConditions,
+  Tutorial,
+  NewMatchConfirmation
+} from "../components"
 import { getItem, setItem } from "../lib/localStorage"
 import { TERMS_AND_CONDITIONS_KEY } from "../lib/constants"
 import { Matches } from "../components/Match"
@@ -55,6 +61,7 @@ class Home extends Component {
     // Modals
     termsAndConditionsVisible: false,
     createMatchVisible: false,
+    createMatchNotificationVisible: false,
     sendMailVisible: false,
     matchesOfTheDayVisible: false
   }
@@ -72,9 +79,18 @@ class Home extends Component {
   /**
    * Create Match form
    */
-  toggleFormModal = e => {
+  toggleFormModal = () => {
     this.setState(({ createMatchVisible: createMatchVisible }) => ({
       createMatchVisible: !createMatchVisible
+    }))
+  }
+
+  /**
+   * In conjuction with toggleFormModal()
+   */
+  toggleNewMatchNotification = () => {
+    this.setState(({ createMatchNotificationVisible }) => ({
+      createMatchNotificationVisible: !createMatchNotificationVisible
     }))
   }
 
@@ -160,8 +176,9 @@ class Home extends Component {
 
     createMatch(data)
       .then(() => {
-        this.toggleFormModal()
-        this.updateMatches()
+        this.toggleFormModal() // Off
+        this.toggleNewMatchNotification() // On
+        this.updateMatches() // Update (in the background)
       })
       .catch(error => {
         throw error
@@ -173,8 +190,8 @@ class Home extends Component {
     if (doc.owner === email) {
       deleteMatch(doc)
         .then(() => {
-          this.toggleFormModalWithParams()
-          this.updateMatches()
+          this.toggleFormModalWithParams() // Off
+          this.updateMatches() // Update
         })
         .catch(error => {
           throw error
@@ -188,6 +205,7 @@ class Home extends Component {
     try {
       const result = await sendConsultingEmail(this.props.user.email, data)
       if (!result.error) this.toggleSendMailModal()
+      // Off
       else throw result
     } catch (error) {
       console.log("error sending mail, in index.js", error)
@@ -199,6 +217,7 @@ class Home extends Component {
     const {
       matches,
       createMatchVisible,
+      createMatchNotificationVisible,
       sendMailVisible,
       matchesOfTheDayVisible,
       termsAndConditionsVisible,
@@ -251,6 +270,10 @@ class Home extends Component {
               toggleModal={this.toggleFormModal}
               handleFormSubmit={this.sendMatch}
               selectedDay={selectedDay}
+            />
+            <NewMatchConfirmation
+              isVisible={createMatchNotificationVisible}
+              toggleModal={this.toggleNewMatchNotification}
             />
             <SendEmailForm
               isVisible={sendMailVisible}
