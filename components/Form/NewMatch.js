@@ -123,13 +123,15 @@ export const NewMatch = ({
               {status.msg}
             </div>
           )}
-          <button
-            className={`button is-primary ${isSubmitting && "is-loading"}`}
-            type="submit"
-            disabled={isSubmitting}
-          >
-            Enviar
-          </button>
+          <div className="confirmation">
+            <button
+              className={`button is-primary ${isSubmitting && "is-loading"}`}
+              type="submit"
+              disabled={isSubmitting}
+            >
+              Enviar
+            </button>
+          </div>
         </form>
       )}
     </Formik>
