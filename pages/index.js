@@ -1,7 +1,7 @@
 import { Component } from "react"
 import { atob } from "isomorphic-base64"
 import { parse, isValid } from "date-fns"
-
+import moment from "moment"
 import {
   Calendar,
   Layout,
@@ -153,7 +153,11 @@ class Home extends Component {
   }
 
   sendMatch = async ({ title, owner, date, time }) => {
-    const reservation_date = parse(`${date} ${time}`)
+    // NOTICE: date-fns does not support parsing UTC timezone, that's why it's using moment.js
+    // const reservation_date = parse(`${date} ${time}`)
+    const reservation_date = moment(`${date} ${time}`)
+      .utc()
+      .toDate()
     const {
       payload: { data: similarMatch }
     } = await getMatchByDate(reservation_date)
