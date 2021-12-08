@@ -1,0 +1,86 @@
+/* Reference: https://material.io/tools/color/#!/?view.left=0&view.right=0&primary.color=66BB6A&secondary.color=4FC3F7&primary.text.color=000000&secondary.text.color=000000 */
+
+.navbar {
+  background-color: #64ba69;
+}
+#navbarMenu {
+  background-color: #96ed98;
+}
+.side-button {
+  z-index: 2;
+  position: absolute;
+  right: 0;
+  top: calc(100vh / 2);
+  text-orientation: mixed;
+  writing-mode: vertical-rl;
+}
+.side-button button {
+  height: 5em;
+}
+#terms-and-conditions p {
+  margin-bottom: 10px;
+}
+.button.is-primary {
+  color: #000;
+  background-color: var(--secondary-color);
+}
+.button.is-primary:hover {
+  color: #000;
+  background-color: var(--secondary-light-color);
+}
+.button.is-primary:disabled {
+  color: #000;
+  background-color: var(--secondary-dark-color);
+}
+.button.is-primary:focus {
+  color: #000;
+}
+.button.is-primary:active {
+  outline: none;
+}
+.modal .is-inactive {
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+.modal .is-active {
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+.confirmation {
+  display: grid;
+  justify-content: end;
+}
+.table {
+  min-width: 100%;
+}
+.table thead {
+  background: #6b766c;
+}
+.table thead tr th {
+  color: #fff;
+}
+.table tbody {
+  background: var(--primary-light-color);
+}
+.table tbody tr td {
+  border: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pagination-bottom .columns {
+  display: flex;
+}
+.pagination-bottom .columns .column:nth-child(1) {
+  text-align: right;
+}
+.pagination-bottom .columns .column:nth-child(2) {
+  text-align: center;
+}
+.pagination-bottom .columns .column:nth-child(3) {
+  text-align: left;
+}

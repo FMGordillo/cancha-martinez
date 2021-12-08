@@ -1,7 +1,7 @@
 import { Component } from "react"
 import Head from "next/head"
 import Link from "next/link"
-import "./style.styl"
+import classes from "./Style.module.css"
 
 export class Layout extends Component {
   state = {

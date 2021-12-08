@@ -1,0 +1,153 @@
+/** @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700); **/
+/** @import url(https://fonts.googleapis.com/icon?family=Material+Icons); **/
+.icon {
+  font-family: "Material Icons", serif;
+  font-style: normal;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  text-rendering: optimizeLegibility;
+}
+
+.row {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.row-middle {
+  align-items: center;
+}
+.col {
+  flex-grow: 1;
+  flex-basis: 0;
+  max-width: 100%;
+}
+.col-start {
+  justify-content: flex-start;
+  text-align: left;
+  margin-left: 24px;
+}
+.col-center {
+  justify-content: center;
+  text-align: center;
+}
+.col-end {
+  justify-content: flex-end;
+  text-align: right;
+  margin-right: 24px;
+}
+.calendar {
+  display: block;
+  position: relative;
+  width: 100%;
+  background: var(--neutral-color);
+  border: 1px solid var(--border-color);
+}
+.calendar .header {
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 115%;
+  padding: 1.5em 0;
+  color: #fff;
+  background: #6b766c;
+}
+.calendar .header .icon {
+  cursor: pointer;
+  transition: 0.15s ease-out;
+}
+.calendar .header .icon:hover {
+  transform: scale(1.75);
+  transition: 0.25s ease-out;
+  color: var(--main-color);
+}
+.calendar .header .icon:first-of-type {
+  margin-left: 1em;
+}
+.calendar .header .icon:last-of-type {
+  margin-right: 1em;
+}
+.calendar .days {
+  text-transform: uppercase;
+  font-weight: 400;
+  background: var(--primary-color);
+  color: #fff;
+  font-size: 70%;
+  padding: 0.75em 0;
+}
+.calendar .body .cell {
+  position: relative;
+  height: 6em;
+  background: var(--primary-light-color);
+  overflow: hidden;
+  transition: 0.25s ease-out;
+  border: 0.25px solid #ccc;
+  cursor: pointer;
+}
+.calendar .body .cell:last-child {
+  border-right: none;
+}
+.calendar .body .cell .number-cell {
+  position: absolute;
+  font-size: 82.5%;
+  line-height: 1;
+  top: 0.75em;
+  right: 0.75em;
+  font-weight: 700;
+}
+.calendar .body .cell .bg {
+  font-weight: 700;
+  line-height: 1;
+  opacity: 0;
+  font-size: 8em;
+  position: absolute;
+  top: -0.2em;
+  right: -0.05em;
+  transition: 0.25s ease-out;
+  letter-spacing: -0.07em;
+}
+.calendar .body .cell .matches .match {
+  margin-top: 2px;
+  font-size: 0.8em;
+  width: 85%;
+  background-color: var(--secondary-color);
+  padding-left: 10px;
+  border-radius: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: pointer;
+}
+.calendar .body .selected {
+  border-left: 10px solid transparent;
+  border-image: linear-gradient(
+    45deg,
+    var(--secondary-light-color) 0%,
+    var(--secondary-color) 40%
+  );
+  border-image-slice: 1;
+}
+.calendar .body .row:last-child {
+  border-bottom: none;
+}
+.calendar .body .disabled {
+  color: var(--text-color-light);
+  pointer-events: none;
+}
+.calendar .body .col {
+  flex-grow: 0;
+  flex-basis: calc(100% / 7);
+  width: calc(100% / 7);
+}
+.calendar .body .cell:hover .bg,
+.calendar .body .selected .bg {
+  opacity: 0.05;
+  transition: 0.5s ease-in;
+}

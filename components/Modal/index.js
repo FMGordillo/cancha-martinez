@@ -1,5 +1,5 @@
 // TODO: Finish of polishing this
-import "../style.styl"
+import classes from "../Style.module.css"
 export default ({ title, isVisible, toggleModal, children }) => (
   <div className={`modal ${(isVisible && "is-active") || "is-inactive"}`}>
     <div className="modal-background" onClick={toggleModal} />

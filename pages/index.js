@@ -18,7 +18,7 @@ import {
   MatchesOfTheDay as MatchesForm
 } from "../components/Form"
 
-import "../components/calendar.styl"
+import classes from "../components/Calendar.module.css"
 
 import {
   getMatches,
