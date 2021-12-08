@@ -1,0 +1,28 @@
+:root {
+  --primary-color: #64ba69;
+  --primary-light-color: #96ed98;
+  --primary-dark-color: #31893d;
+  --secondary-color: #4fc2f7;
+  --secondary-light-color: #8bf5ff;
+  --secondary-dark-color: #0092c4;
+
+  --main-color: #93ff96;
+  --text-color: #777;
+  --text-color-light: #ccc;
+  --border-color: #dbdbdb;
+  --bg-color: #f9f9f9;
+  --match-color: #86e7b8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100vh;
+  background: url("/static/cancha-fondo.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: "IBM Plex Sans", sans-serif;
+}
