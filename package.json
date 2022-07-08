@@ -25,7 +25,7 @@
     "formik": "^1.4.3",
     "isomorphic-base64": "^1.0.2",
     "log4js": "^4.0.2",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "next": "^11.1.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.1",
